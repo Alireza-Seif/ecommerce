@@ -52,14 +52,14 @@ class ProductListScreen extends StatelessWidget {
                 sliver: SliverGrid(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      return ProductItem();
+                      return const ProductItem();
                     },
                   ),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                       childAspectRatio: 2 / 2.5,
-                      mainAxisSpacing: 20,
-                      crossAxisSpacing: 20),
+                      mainAxisSpacing: 30,
+                      crossAxisSpacing: 30),
                 ),
               ),
             ],
