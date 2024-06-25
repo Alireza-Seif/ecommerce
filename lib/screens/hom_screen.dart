@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return const Padding(
                       padding: EdgeInsets.only(left: 20),
-                      child: CategoryHorizontaltemList(),
+                      child: CategoryltemChip(),
                     );
                   },
                 ),

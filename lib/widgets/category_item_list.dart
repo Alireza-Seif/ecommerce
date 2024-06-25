@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CategoryHorizontaltemList extends StatelessWidget {
-  const CategoryHorizontaltemList({
+class CategoryltemChip extends StatelessWidget {
+  const CategoryltemChip({
     super.key,
   });
 
