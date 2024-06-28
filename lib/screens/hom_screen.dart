@@ -2,7 +2,6 @@ import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/widgets/banner_slider.dart';
 import 'package:ecommerce/widgets/category_item_list.dart';
 import 'package:ecommerce/widgets/product_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +10,7 @@ class HomeScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -20,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 20, right: 20, top: 10, bottom: 32),
+                    left: 20, right: 20, top: 10, bottom: 32), 
                 child: Container(
                   height: 46,
                   decoration: const BoxDecoration(
