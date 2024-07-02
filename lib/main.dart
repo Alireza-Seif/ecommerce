@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/screens/card_screen.dart';
-import 'package:ecommerce/screens/category_screen.dart';
 import 'package:ecommerce/screens/hom_screen.dart';
 import 'package:ecommerce/screens/product_list_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
