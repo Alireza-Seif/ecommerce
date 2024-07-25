@@ -38,11 +38,11 @@ class _MainAppState extends State<MainApp> {
             child: Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  //   var either = await AuthencticationRepository().register();
-                  //   either.fold((errorMessage) => print(errorMessage),
-                  //       (successMessage) => print(successMessage));
-                  // },
-                },
+                    var either = await AuthencticationRepository().login('amirahmad','12345678');
+                    either.fold((errorMessage) => print(errorMessage),
+                        (successMessage) => print(successMessage));
+                  },
+                
                 child: const Text('click to register'),
               ),
             ),
