@@ -13,8 +13,10 @@ import 'package:ecommerce/screens/product_list_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await getItInit();
   runApp(const MainApp());
 }
@@ -38,11 +40,13 @@ class _MainAppState extends State<MainApp> {
             child: Center(
               child: ElevatedButton(
                 onPressed: () async {
-                    var either = await AuthencticationRepository().login('amirahmad','12345678');
-                    either.fold((errorMessage) => print(errorMessage),
-                        (successMessage) => print(successMessage));
-                  },
-                
+                  var either = await AuthencticationRepository()
+                      .login('amirahmad', '12345678');
+                  var shared = locator.get<SharedPreferences>();
+                  print(shared.getString('access_token'));
+                  // either.fold((errorMessage) => print(errorMessage),
+                  //     (successMessage) => print(successMessage));
+                },
                 child: const Text('click to register'),
               ),
             ),

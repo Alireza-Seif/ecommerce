@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ecommerce/data/datasource/authentication_datasource.dart';
 import 'package:ecommerce/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class IAuthRepository {
   Future<Either<ApiException, String>> register(
@@ -12,6 +13,7 @@ abstract class IAuthRepository {
 
 class AuthencticationRepository extends IAuthRepository {
   final IAuthenticcationDatasource _datasource = locator.get();
+  final SharedPreferences _sharedPref = locator.get();
 
   @override
   Future<Either<ApiException, String>> register(
@@ -27,8 +29,9 @@ class AuthencticationRepository extends IAuthRepository {
   @override
   Future<Either<String, String>> login(String username, String password) async {
     try {
-      String token = await await _datasource.login(username, password);
+      String token =  await _datasource.login(username, password);
       if (token.isNotEmpty) {
+        _sharedPref.setString('access_token', token);
         return right('شما وارد شده اید');
       } else {
         return left('خطایی در ورود پیش آمده');
