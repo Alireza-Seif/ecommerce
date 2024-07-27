@@ -11,6 +11,7 @@ import 'package:ecommerce/screens/card_screen.dart';
 import 'package:ecommerce/screens/hom_screen.dart';
 import 'package:ecommerce/screens/product_list_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
+import 'package:ecommerce/util/auth_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -37,20 +38,38 @@ class _MainAppState extends State<MainApp> {
         create: (context) => HomeBloc(),
         child: Scaffold(
           body: SafeArea(
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  var either = await AuthencticationRepository()
-                      .login('amirahmad', '12345678');
-                  var shared = locator.get<SharedPreferences>();
-                  print(shared.getString('access_token'));
-                  // either.fold((errorMessage) => print(errorMessage),
-                  //     (successMessage) => print(successMessage));
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () async {
+                    var either = await AuthencticationRepository()
+                        .login('amirahmad', '12345678');
+                  },
+                  child: const Text('login')),
+              ElevatedButton(
+                  onPressed: () {
+                    AuthManager.logout();
+                  },
+                  child: const Text('logout')),
+              ValueListenableBuilder(
+                valueListenable: AuthManager.authChangeNotifire,
+                builder: (context, value, child) {
+                  if (value == null || value.isEmpty) {
+                    return const Text(
+                      'شما وارد نشده اید',
+                      style: TextStyle(fontSize: 20),
+                    );
+                  } else {
+                    return const Text(
+                      'شما وارد شده اید',
+                      style: TextStyle(fontSize: 20),
+                    );
+                  }
                 },
-                child: const Text('click to register'),
-              ),
-            ),
-          ),
+              )
+            ],
+          )),
           // body: IndexedStack(
           //   index: selectedBottomNavigationIndex,
           //   children: getScreens(),

@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:ecommerce/data/datasource/authentication_datasource.dart';
 import 'package:ecommerce/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
+import 'package:ecommerce/util/auth_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class IAuthRepository {
@@ -31,7 +32,7 @@ class AuthencticationRepository extends IAuthRepository {
     try {
       String token =  await _datasource.login(username, password);
       if (token.isNotEmpty) {
-        _sharedPref.setString('access_token', token);
+       AuthManager.saveToken(token);
         return right('شما وارد شده اید');
       } else {
         return left('خطایی در ورود پیش آمده');
