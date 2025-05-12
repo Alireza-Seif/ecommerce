@@ -1,26 +1,27 @@
-import 'package:ecommerce/di.dart';
+import 'package:ecommerce/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthManager {
-  static final ValueNotifier<String?> authChangeNotifire = ValueNotifier(null);
+  static const String _tokenKey = 'access_token';
+  static final ValueNotifier<String?> authChangeNotifier = ValueNotifier(null);
   static final SharedPreferences _sharedPref = locator.get();
 
   static void saveToken(String token) async {
-    _sharedPref.setString('access', token);
-    authChangeNotifire.value = token;
+    await _sharedPref.setString(_tokenKey, token);
+    authChangeNotifier.value = token;
   }
-
+ 
   static String readAuth() {
-    return _sharedPref.getString('access_token') ?? '';
+    return _sharedPref.getString(_tokenKey) ?? '';
   }
 
   static void logout() {
     _sharedPref.clear();
-    authChangeNotifire.value = null;
+    authChangeNotifier.value = null;
   }
 
-  static bool isLogedin() {
+  static bool isLogin() {
     String token = readAuth();
     return token.isNotEmpty;
   }

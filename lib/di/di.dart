@@ -10,8 +10,8 @@ var locator= GetIt.instance;
 Future<void> getItInit() async{
 
 
-  //componenets
-locator.registerSingleton<Dio>(Dio(BaseOptions(baseUrl: 'http://startflutter.ir/api/')));
+//components
+locator.registerSingleton<Dio>(Dio(BaseOptions(baseUrl: 'https://startflutter.ir/api/')));
 
 
 locator.registerSingleton<SharedPreferences>(await SharedPreferences.getInstance());
@@ -20,5 +20,5 @@ locator.registerFactory<IAuthenticationDatasource>(() => AuthenticationRemote())
 
 
 //repositories
-locator.registerFactory<IAuthRepository>(() => AuthencticationRepository());
+locator.registerFactory<IAuthRepository>(() => AuthenticationRepository());
 }

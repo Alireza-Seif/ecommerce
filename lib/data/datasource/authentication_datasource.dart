@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:ecommerce/di.dart';
+import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
 
 abstract class IAuthenticationDatasource {
   Future<void> register(String username, String password, String passwordConfirm);
   Future<String> login(String username, String password);
-}
+}  
 
 class AuthenticationRemote implements IAuthenticationDatasource {
   final Dio _dio = locator.get();

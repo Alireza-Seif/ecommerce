@@ -4,17 +4,16 @@ import 'package:ecommerce/bloc/home_bloc.dart';
 // import 'package:ecommerce/bloc/home_event.dart';
 // import 'package:ecommerce/bloc/home_state.dart';
 import 'package:ecommerce/constants/colors.dart';
-import 'package:ecommerce/data/datasource/authentication_datasource.dart';
 import 'package:ecommerce/data/repository/authentication_repository.dart';
-import 'package:ecommerce/di.dart';
+import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/screens/card_screen.dart';
 import 'package:ecommerce/screens/hom_screen.dart';
+import 'package:ecommerce/screens/login_screen.dart';
 import 'package:ecommerce/screens/product_list_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
 import 'package:ecommerce/util/auth_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,46 +33,11 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: BlocProvider(
         create: (context) => HomeBloc(),
         child: Scaffold(
-          body: SafeArea(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () async {
-                    var either = await AuthencticationRepository()
-                        .login('amirahmad', '12345678');
-                  },
-                  child: const Text('login')),
-              ElevatedButton(
-                  onPressed: () {
-                    AuthManager.logout();
-                  },
-                  child: const Text('logout')),
-              ValueListenableBuilder(
-                valueListenable: AuthManager.authChangeNotifire,
-                builder: (context, value, child) {
-                  if (value == null || value.isEmpty) {
-                    return const Text(
-                      'شما وارد نشده اید',
-                      style: TextStyle(fontSize: 20), 
-                    );
-                  } else {
-                    return const Text(
-                      'شما وارد شده اید',
-                      style: TextStyle(fontSize: 20),
-                    );
-                  }
-                },
-              )
-            ],
-          )),
-          // body: IndexedStack(
-          //   index: selectedBottomNavigationIndex,
-          //   children: getScreens(),
-          // ),
+          body: LoginScreen(), 
           bottomNavigationBar: ClipRRect(
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
