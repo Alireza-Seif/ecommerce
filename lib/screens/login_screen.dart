@@ -1,11 +1,16 @@
+import 'package:bloc/bloc.dart';
+import 'package:ecommerce/bloc/auth/auth_bloc.dart';
+import 'package:ecommerce/bloc/auth/auth_event.dart';
+import 'package:ecommerce/bloc/auth/auth_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  final _usernameTextController = TextEditingController();
-  final _passwordTextController = TextEditingController();
+  final _usernameTextController = TextEditingController(text: 'amirahmad');
+  final _passwordTextController = TextEditingController(text: '12345678');
 
   @override
   Widget build(BuildContext context) {
@@ -89,22 +94,44 @@ class LoginScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        textStyle: TextStyle(
-                          fontFamily: 'sb',
-                          fontSize: 20,
-                        ),
-                        foregroundColor: Colors.white,
-                        backgroundColor: CustomColors.blue,
-                        minimumSize: Size(200, 48),
-                        
-                      ),
-                      child: Text('ورود به حساب کاربری'),
+                    BlocBuilder<AuthBloc, AuthState>(
+                      builder: (context, state) {
+                        if (state is AuthInitiateState) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<AuthBloc>(context).add(
+                                  AuthLoginRequest(_usernameTextController.text,
+                                      _passwordTextController.text));
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              textStyle: TextStyle(
+                                fontFamily: 'sb',
+                                fontSize: 20,
+                              ),
+                              foregroundColor: Colors.white,
+                              backgroundColor: CustomColors.blue,
+                              minimumSize: Size(200, 48),
+                            ),
+                            child: Text('ورود به حساب کاربری'),
+                          );
+                        } else if (state is AuthLoadingState) {
+                          return CircularProgressIndicator(
+                            color: CustomColors.blue,
+                          );
+                        } else if (state is AuthResponseState) {
+                          Text widget = Text('');
+                          state.response.fold(
+                            (l) => widget = Text(l),
+                            (r) => widget = Text(r),
+                          );
+                          return widget;
+                        }
+
+                        return Text('خطای نا مشخض !!!');
+                      },
                     )
                   ],
                 ),

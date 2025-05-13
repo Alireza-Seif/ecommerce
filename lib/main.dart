@@ -1,6 +1,7 @@
 import 'dart:ui';
 
-import 'package:ecommerce/bloc/home_bloc.dart';
+import 'package:ecommerce/bloc/auth/auth_bloc.dart';
+import 'package:ecommerce/bloc/product/home_bloc.dart';
 // import 'package:ecommerce/bloc/home_event.dart';
 // import 'package:ecommerce/bloc/home_state.dart';
 import 'package:ecommerce/constants/colors.dart';
@@ -34,98 +35,97 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BlocProvider(
-        create: (context) => HomeBloc(),
-        child: Scaffold(
-          body: LoginScreen(), 
-          bottomNavigationBar: ClipRRect(
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
-              child: BottomNavigationBar(
-                onTap: (int index) {
-                  setState(() {
-                    selectedBottomNavigationIndex = index;
-                  });
-                },
-                type: BottomNavigationBarType.fixed,
-                backgroundColor: Colors.transparent,
-                currentIndex: selectedBottomNavigationIndex,
-                elevation: 0,
-                selectedLabelStyle: const TextStyle(
-                    fontFamily: 'SB', fontSize: 10, color: CustomColors.blue),
-                unselectedLabelStyle: const TextStyle(
-                    fontFamily: 'SB', fontSize: 10, color: Colors.black),
-                items: [
-                  BottomNavigationBarItem(
-                    activeIcon: Container(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: CustomColors.blue,
-                                spreadRadius: -7,
-                                blurRadius: 20,
-                                offset: Offset(0, 13)),
-                          ],
-                        ),
-                        child: Image.asset(
-                            'assets/images/icon_profile_active.png')),
-                    label: 'حساب کاربری',
-                    icon: Image.asset('assets/images/icon_profile.png'),
-                  ),
-                  BottomNavigationBarItem(
-                    activeIcon: Container(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: CustomColors.blue,
-                                spreadRadius: -7,
-                                blurRadius: 20,
-                                offset: Offset(0, 13)),
-                          ],
-                        ),
-                        child: Image.asset(
-                            'assets/images/icon_basket_active.png')),
-                    label: 'سبد خرید',
-                    icon: Image.asset('assets/images/icon_basket.png'),
-                  ),
-                  BottomNavigationBarItem(
-                    activeIcon: Container(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: CustomColors.blue,
-                                spreadRadius: -7,
-                                blurRadius: 20,
-                                offset: Offset(0, 13)),
-                          ],
-                        ),
-                        child: Image.asset(
-                            'assets/images/icon_category_active.png')),
-                    label: 'دسته بندی',
-                    icon: Image.asset('assets/images/icon_category.png'),
-                  ),
-                  BottomNavigationBarItem(
-                    activeIcon: Container(
-                        padding: const EdgeInsets.only(bottom: 5),
-                        decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: CustomColors.blue,
-                                spreadRadius: -7,
-                                blurRadius: 20,
-                                offset: Offset(0, 13)),
-                          ],
-                        ),
-                        child:
-                            Image.asset('assets/images/icon_home_active.png')),
-                    label: 'خانه',
-                    icon: Image.asset('assets/images/icon_home.png'),
-                  ),
-                ],
-              ),
+      home: Scaffold(
+        body: BlocProvider(
+          create: (context) => AuthBloc(),
+          child: LoginScreen(),
+        ),
+        bottomNavigationBar: ClipRRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40),
+            child: BottomNavigationBar(
+              onTap: (int index) {
+                setState(() {
+                  selectedBottomNavigationIndex = index;
+                });
+              },
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: Colors.transparent,
+              currentIndex: selectedBottomNavigationIndex,
+              elevation: 0,
+              selectedLabelStyle: const TextStyle(
+                  fontFamily: 'SB', fontSize: 10, color: CustomColors.blue),
+              unselectedLabelStyle: const TextStyle(
+                  fontFamily: 'SB', fontSize: 10, color: Colors.black),
+              items: [
+                BottomNavigationBarItem(
+                  activeIcon: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: CustomColors.blue,
+                              spreadRadius: -7,
+                              blurRadius: 20,
+                              offset: Offset(0, 13)),
+                        ],
+                      ),
+                      child:
+                          Image.asset('assets/images/icon_profile_active.png')),
+                  label: 'حساب کاربری',
+                  icon: Image.asset('assets/images/icon_profile.png'),
+                ),
+                BottomNavigationBarItem(
+                  activeIcon: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: CustomColors.blue,
+                              spreadRadius: -7,
+                              blurRadius: 20,
+                              offset: Offset(0, 13)),
+                        ],
+                      ),
+                      child:
+                          Image.asset('assets/images/icon_basket_active.png')),
+                  label: 'سبد خرید',
+                  icon: Image.asset('assets/images/icon_basket.png'),
+                ),
+                BottomNavigationBarItem(
+                  activeIcon: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: CustomColors.blue,
+                              spreadRadius: -7,
+                              blurRadius: 20,
+                              offset: Offset(0, 13)),
+                        ],
+                      ),
+                      child: Image.asset(
+                          'assets/images/icon_category_active.png')),
+                  label: 'دسته بندی',
+                  icon: Image.asset('assets/images/icon_category.png'),
+                ),
+                BottomNavigationBarItem(
+                  activeIcon: Container(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      decoration: const BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: CustomColors.blue,
+                              spreadRadius: -7,
+                              blurRadius: 20,
+                              offset: Offset(0, 13)),
+                        ],
+                      ),
+                      child: Image.asset('assets/images/icon_home_active.png')),
+                  label: 'خانه',
+                  icon: Image.asset('assets/images/icon_home.png'),
+                ),
+              ],
             ),
           ),
         ),
