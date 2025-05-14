@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ecommerce/bloc/category/category_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/di/di.dart';
@@ -9,6 +10,8 @@ import 'package:ecommerce/screens/hom_screen.dart';
 import 'package:ecommerce/screens/product_list_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await getItInit();
@@ -23,7 +26,7 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  int selectedBottomNavigationIndex = 0;
+  int selectedBottomNavigationIndex = 3;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -130,9 +133,11 @@ class _MainAppState extends State<MainApp> {
     return <Widget>[
       const ProfileScreen(),
       const CardScreen(),
-      const CategoryScreen(),
+      BlocProvider(
+        create: (context) => CategoryBloc(),
+        child: CategoryScreen(),
+      ),
       const HomeScreen(),
     ];
   }
 }
-
