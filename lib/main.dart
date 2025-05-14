@@ -1,21 +1,14 @@
 import 'dart:ui';
 
-import 'package:ecommerce/bloc/auth/auth_bloc.dart';
-import 'package:ecommerce/bloc/product/home_bloc.dart';
-// import 'package:ecommerce/bloc/home_event.dart';
-// import 'package:ecommerce/bloc/home_state.dart';
 import 'package:ecommerce/constants/colors.dart';
-import 'package:ecommerce/data/repository/authentication_repository.dart';
+import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/screens/card_screen.dart';
+import 'package:ecommerce/screens/category_screen.dart';
 import 'package:ecommerce/screens/hom_screen.dart';
-import 'package:ecommerce/screens/login_screen.dart';
 import 'package:ecommerce/screens/product_list_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
-import 'package:ecommerce/util/auth_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await getItInit();
@@ -36,9 +29,9 @@ class _MainAppState extends State<MainApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: BlocProvider(
-          create: (context) => AuthBloc(),
-          child: LoginScreen(),
+        body: IndexedStack(
+          index: selectedBottomNavigationIndex,
+          children: getScreens(),
         ),
         bottomNavigationBar: ClipRRect(
           child: BackdropFilter(
@@ -137,43 +130,9 @@ class _MainAppState extends State<MainApp> {
     return <Widget>[
       const ProfileScreen(),
       const CardScreen(),
-      const ProductListScreen(),
+      const CategoryScreen(),
       const HomeScreen(),
     ];
   }
 }
 
-// class MyScreen extends StatelessWidget {
-//   const MyScreen({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           ElevatedButton(
-//             onPressed: () {
-//               BlocProvider.of<HomeBloc>(context).add(ClickEvent());
-//             },
-//             child: const Text(
-//               ('clicked'),
-//             ),
-//           ),
-//           BlocBuilder<HomeBloc, HomeState>(
-//             builder: ((context, state) {
-//               if (state is InitHome) {
-//                 return const Text('0');
-//               } else if (state is UpdateHome) {
-//                 print('doing the job!');
-//                 return Text('${state.x}');
-//               } else {
-//                 return const Text('error');
-//               }
-//             }),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

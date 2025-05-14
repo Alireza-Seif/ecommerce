@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:ecommerce/bloc/auth/auth_bloc.dart';
 import 'package:ecommerce/bloc/auth/auth_event.dart';
 import 'package:ecommerce/bloc/auth/auth_state.dart';
