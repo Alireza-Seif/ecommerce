@@ -1,31 +1,31 @@
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/data/model/banner_model.dart';
+import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class BannerSlider extends StatelessWidget {
-  const BannerSlider({
-    super.key,
-  });
+  List<BannerModel> bannerList;
+  BannerSlider({super.key, required this.bannerList});
 
   @override
   Widget build(BuildContext context) {
-    var controller = PageController(viewportFraction: 0.8);
+    var controller = PageController(viewportFraction: 0.9);
     return Stack(
       alignment: AlignmentDirectional.bottomCenter,
       children: [
         SizedBox(
-          height: 200,
+          height: 177,
           child: PageView.builder(
             controller: controller,
-            itemCount: 3,
+            itemCount: bannerList.length,
             itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 12, right: 12),
-                child: Container(
-                  height: 200,
-                  color: Colors.blue,
-                ),
-              );
+              return Container(
+                  margin: EdgeInsets.symmetric(horizontal: 6),
+                  child: CachedImage(
+                    imageUrl: bannerList[index].thumbnail!,
+                    radius: 15,
+                  ));
             },
           ),
         ),
@@ -33,11 +33,11 @@ class BannerSlider extends StatelessWidget {
           bottom: 10,
           child: SmoothPageIndicator(
             controller: controller,
-            count: 3,
+            count: bannerList.length,
             effect: const ExpandingDotsEffect(
               expansionFactor: 4.5,
-              dotHeight: 10,
-              dotWidth: 10,
+              dotHeight: 8,
+              dotWidth: 8,
               dotColor: Colors.white,
               activeDotColor: CustomColors.blueIndicator,
             ),

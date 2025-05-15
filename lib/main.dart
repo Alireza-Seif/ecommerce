@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:ecommerce/bloc/category/category_bloc.dart';
+import 'package:ecommerce/bloc/home/home_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/di/di.dart';
@@ -137,7 +138,10 @@ class _MainAppState extends State<MainApp> {
         create: (context) => CategoryBloc(),
         child: CategoryScreen(),
       ),
-      const HomeScreen(),
+      BlocProvider(
+        create: (context) => HomeBloc (),
+        child:  HomeScreen(),
+      ),
     ];
   }
 }
