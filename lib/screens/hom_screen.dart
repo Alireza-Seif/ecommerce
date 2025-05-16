@@ -3,6 +3,7 @@ import 'package:ecommerce/bloc/home/home_event.dart';
 import 'package:ecommerce/bloc/home/home_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/banner_model.dart';
+import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/widgets/banner_slider.dart';
 import 'package:ecommerce/widgets/category_item_list.dart';
 import 'package:ecommerce/widgets/product_item.dart';
@@ -34,12 +35,18 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, state) {
             return CustomScrollView(
               slivers: [
+                _getSearchBox(),
                 if (state is HomeLoadingState) ...[
                   SliverToBoxAdapter(
-                    child: Center(child: CircularProgressIndicator()),
+                    child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Center(
+                            child: CircularProgressIndicator(
+                          color: CustomColors.blue,
+                        ))),
                   )
                 ],
-                _getSearchBox(),
                 if (state is HomeRequestSuccessState) ...[
                   state.bannerList.fold(
                     (exceptionMessages) {
@@ -53,11 +60,22 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
                 _getCategoryListTitle(),
-                _getCategoryList(),
+                if (state is HomeRequestSuccessState) ...[
+                  state.categoryList.fold(
+                    (exceptionMessages) {
+                      return SliverToBoxAdapter(
+                        child: Text(exceptionMessages),
+                      );
+                    },
+                    (categoryList) {
+                      return _getCategoryList(categoryList);
+                    },
+                  )
+                ],
                 _getBestSellerTitle(),
                 _getBestSellerProducts(),
                 _getMostViewedTitle(),
-                _getMosteViewedProduct(),
+                _getMostViewedProduct(),
               ],
             );
           },
@@ -67,8 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _getMosteViewedProduct extends StatelessWidget {
-  const _getMosteViewedProduct({
+class _getMostViewedProduct extends StatelessWidget {
+  const _getMostViewedProduct({
     super.key,
   });
 
@@ -107,18 +125,18 @@ class _getMostViewedTitle extends StatelessWidget {
             const EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 32),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            const SizedBox(width: 10),
+            const Text(
+              'پر بازدید ترین ها',
+              style: TextStyle(
+                  fontFamily: 'SB', fontSize: 12, color: CustomColors.grey),
+            ),
+            const Spacer(),
             const Text(
               'مشاهده همه',
               style: TextStyle(fontFamily: 'SB', color: CustomColors.blue),
             ),
-            const Spacer(),
-            const Text(
-              'پر بازدید ترین ها',
-              style: TextStyle(
-                  fontFamily: 'SB', fontSize: 12, color: CustomColors.gery),
-            ),
+            const SizedBox(width: 10),
+            Image.asset('assets/images/icon_left_category.png'),
           ],
         ),
       ),
@@ -165,18 +183,18 @@ class _getBestSellerTitle extends StatelessWidget {
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
         child: Row(
           children: [
-            Image.asset('assets/images/icon_left_categroy.png'),
-            const SizedBox(width: 10),
+            const Text(
+              'پرفروش ترین ها',
+              style: TextStyle(
+                  fontFamily: 'SB', fontSize: 12, color: CustomColors.grey),
+            ),
+            const Spacer(),
             const Text(
               'مشاهده همه',
               style: TextStyle(fontFamily: 'SB', color: CustomColors.blue),
             ),
-            const Spacer(),
-            const Text(
-              'پرفروش ترین ها',
-              style: TextStyle(
-                  fontFamily: 'SB', fontSize: 12, color: CustomColors.gery),
-            ),
+            const SizedBox(width: 10),
+            Image.asset('assets/images/icon_left_category.png'),
           ],
         ),
       ),
@@ -185,7 +203,9 @@ class _getBestSellerTitle extends StatelessWidget {
 }
 
 class _getCategoryList extends StatelessWidget {
-  const _getCategoryList({
+  final List<CategoryModel> categoryList;
+  const _getCategoryList(
+    this.categoryList, {
     super.key,
   });
 
@@ -198,11 +218,11 @@ class _getCategoryList extends StatelessWidget {
         height: 100,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: 10,
+          itemCount: categoryList.length,
           itemBuilder: (context, index) {
-            return const Padding(
+            return Padding(
               padding: EdgeInsets.only(left: 20),
-              child: CategoryltemChip(),
+              child: CategoryItemChip(categoryList[index]),
             );
           },
         ),
@@ -222,12 +242,12 @@ class _getCategoryListTitle extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.only(right: 20, bottom: 20, top: 32),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Text(
               'دسته بندی',
               style: TextStyle(
-                  fontFamily: 'SB', fontSize: 12, color: CustomColors.gery),
+                  fontFamily: 'SB', fontSize: 12, color: CustomColors.grey),
             ),
           ],
         ),
@@ -276,22 +296,22 @@ class _getSearchBox extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
-                Image.asset('assets/images/icon_apple_blue.png'),
-                const Expanded(
-                  child: Text(
-                    'جستجوی محصولات',
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                      fontFamily: 'SB',
-                      fontSize: 16,
-                      color: CustomColors.gery,
-                    ),
-                  ),
-                ),
+                Image.asset('assets/images/icon_search.png'),
                 const SizedBox(
                   width: 10,
                 ),
-                Image.asset('assets/images/icon_search.png'),
+                const Expanded(
+                  child: Text(
+                    'جستجوی محصولات',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontFamily: 'SB',
+                      fontSize: 16,
+                      color: CustomColors.grey,
+                    ),
+                  ),
+                ),
+                Image.asset('assets/images/icon_apple_blue.png'),
               ],
             ),
           ),

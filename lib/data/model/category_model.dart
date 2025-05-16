@@ -17,11 +17,12 @@ class CategoryModel {
 
   factory CategoryModel.fromMapJson(Map<String, dynamic> jsonObject) {
     return CategoryModel(
-        jsonObject['collectionId'],
-        jsonObject['id'],
-        'https://startflutter.ir/api/files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['thumbnail']}',
-        jsonObject['title'],
-        jsonObject['color'],
-        jsonObject['icon']);
+      jsonObject['collectionId'],
+      jsonObject['id'],
+      'https://startflutter.ir/api/files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['thumbnail']}',
+      jsonObject['title'],
+      jsonObject['color'],
+      'https://startflutter.ir/api/files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['icon']}',
+    );
   }
 }

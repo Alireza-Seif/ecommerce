@@ -114,7 +114,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(10)),
                                   border: Border.all(
-                                      width: 1, color: CustomColors.gery),
+                                      width: 1, color: CustomColors.grey),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(6),
@@ -208,7 +208,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   Radius.circular(8),
                                 ),
                                 border: Border.all(
-                                    width: 1, color: CustomColors.gery)),
+                                    width: 1, color: CustomColors.grey)),
                             child: const Center(
                               child: Text(
                                 '128',
@@ -227,7 +227,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   Radius.circular(8),
                                 ),
                                 border: Border.all(
-                                    width: 1, color: CustomColors.gery)),
+                                    width: 1, color: CustomColors.grey)),
                             child: const Center(
                               child: Text(
                                 '128',
@@ -246,7 +246,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   Radius.circular(8),
                                 ),
                                 border: Border.all(
-                                    width: 1, color: CustomColors.gery)),
+                                    width: 1, color: CustomColors.grey)),
                             child: const Center(
                               child: Text(
                                 '128',
@@ -267,7 +267,7 @@ class ProductDetailScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(width: 1, color: CustomColors.gery),
+                    border: Border.all(width: 1, color: CustomColors.grey),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(15),
                     ),
@@ -301,7 +301,7 @@ class ProductDetailScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(width: 1, color: CustomColors.gery),
+                    border: Border.all(width: 1, color: CustomColors.grey),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(15),
                     ),
@@ -335,7 +335,7 @@ class ProductDetailScreen extends StatelessWidget {
                   margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(width: 1, color: CustomColors.gery),
+                    border: Border.all(width: 1, color: CustomColors.grey),
                     borderRadius: const BorderRadius.all(
                       Radius.circular(15),
                     ),

@@ -59,15 +59,15 @@ class ProfileScreen extends StatelessWidget {
               runSpacing: 20,
               spacing: 20,
               children: [
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
-                CategoryltemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
+                // CategoryItemChip(),
               ],
             ),
           ),
@@ -75,17 +75,17 @@ class ProfileScreen extends StatelessWidget {
           const Text(
             'اپل شاپ',
             style: TextStyle(
-                fontFamily: 'SM', fontSize: 10, color: CustomColors.gery),
+                fontFamily: 'SM', fontSize: 10, color: CustomColors.grey),
           ),
           const Text(
             'v-1.0.00',
             style: TextStyle(
-                fontFamily: 'SM', fontSize: 10, color: CustomColors.gery),
+                fontFamily: 'SM', fontSize: 10, color: CustomColors.grey),
           ),
           const Text(
             'Instaagraam.comm/Mojava-dev',
             style: TextStyle(
-                fontFamily: 'SM', fontSize: 10, color: CustomColors.gery),
+                fontFamily: 'SM', fontSize: 10, color: CustomColors.grey),
           ),
         ],
       )),

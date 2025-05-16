@@ -170,7 +170,7 @@ class CardItem extends StatelessWidget {
             child: DottedLine(
               lineThickness: 3.0,
               dashLength: 8.0,
-              dashColor: CustomColors.gery.withOpacity(0.5),
+              dashColor: CustomColors.grey.withOpacity(0.5),
               dashGapLength: 3.0,
               dashGapColor: Colors.transparent,
             ),
@@ -201,7 +201,7 @@ class OptionCheap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: CustomColors.gery, width: 1),
+        border: Border.all(color: CustomColors.grey, width: 1),
         borderRadius: const BorderRadius.all(
           Radius.circular(10),
         ),

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce/data/model/banner_model.dart';
+import 'package:ecommerce/data/model/category_model.dart';
 
 abstract class HomeState {}
 
@@ -10,5 +11,6 @@ class HomeInitState extends HomeState {}
 
 class HomeRequestSuccessState extends HomeState {
   Either<String, List<BannerModel>> bannerList;
-  HomeRequestSuccessState(this.bannerList);
+  Either<String, List<CategoryModel>> categoryList;
+  HomeRequestSuccessState(this.bannerList, this.categoryList);
 }
