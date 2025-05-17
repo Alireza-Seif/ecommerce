@@ -1,8 +1,12 @@
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/data/model/product_model.dart';
+import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 
 class ProductItem extends StatelessWidget {
-  const ProductItem({
+  ProductModel productItem;
+  ProductItem(
+    this.productItem, {
     super.key,
   });
 
@@ -19,14 +23,20 @@ class ProductItem extends StatelessWidget {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 10),
           Stack(
             alignment: AlignmentDirectional.center,
             children: [
               Expanded(child: Container()),
-              Image.asset('assets/images/iphone.png'),
+              SizedBox(
+                height: 98,
+                width: 98,
+                child: Center(
+                  child: CachedImage(imageUrl: productItem.thumbnail),
+                ),
+              ),
               Positioned(
                 top: 0,
                 right: 10,
@@ -50,10 +60,10 @@ class ProductItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                  child: const Padding(
+                  child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 3, horizontal: 6),
                     child: Text(
-                      '%4',
+                      '${productItem.percent!.round()} %',
                       style: TextStyle(
                           fontFamily: 'SB', fontSize: 12, color: Colors.white),
                     ),
@@ -63,8 +73,8 @@ class ProductItem extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
                 padding: EdgeInsets.only(
@@ -72,7 +82,8 @@ class ProductItem extends StatelessWidget {
                   right: 10,
                 ),
                 child: Text(
-                  'آیفون 13 پرومکس',
+                  productItem.name,
+                  maxLines: 1,
                   style: TextStyle(
                     fontFamily: 'SM',
                     fontSize: 14,
@@ -103,19 +114,25 @@ class ProductItem extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  SizedBox(
+                    width: 24,
+                    child: Image.asset(
+                        'assets/images/icon_right_arrow_circle.png'),
+                  ),
+                  const Spacer(),
                   const Text('تومان',
                       style: TextStyle(
                         fontFamily: 'SM',
-                        fontSize: 12,
+                        fontSize: 14,
                         color: Colors.white,
                       )),
-                  const SizedBox(width: 5),
-                  const Column(
+                  const SizedBox(width: 10),
+                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '49.800.000',
+                        productItem.price.toString(),
                         style: TextStyle(
                           fontFamily: 'SM',
                           fontSize: 12,
@@ -124,7 +141,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '47.800.000',
+                        productItem.realPrice.toString(),
                         style: TextStyle(
                           fontFamily: 'SM',
                           fontSize: 16,
@@ -132,13 +149,7 @@ class ProductItem extends StatelessWidget {
                         ),
                       ),
                     ],
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 24,
-                    child: Image.asset(
-                        'assets/images/icon_right_arrow_cricle.png'),
-                  ),
+                  ), const SizedBox(width: 5),
                 ],
               ),
             ),

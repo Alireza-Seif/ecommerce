@@ -4,6 +4,7 @@ import 'package:ecommerce/bloc/home/home_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/banner_model.dart';
 import 'package:ecommerce/data/model/category_model.dart';
+import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/widgets/banner_slider.dart';
 import 'package:ecommerce/widgets/category_item_list.dart';
 import 'package:ecommerce/widgets/product_item.dart';
@@ -73,7 +74,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
                 _getBestSellerTitle(),
-                _getBestSellerProducts(),
+                if (state is HomeRequestSuccessState) ...[
+                  state.productList.fold(
+                    (exceptionMessages) {
+                      return SliverToBoxAdapter(
+                        child: Text(exceptionMessages),
+                      );
+                    },
+                    (productList) {
+                      return _getBestSellerProducts(productList);
+                    },
+                  )
+                ],
                 _getMostViewedTitle(),
                 _getMostViewedProduct(),
               ],
@@ -103,7 +115,7 @@ class _getMostViewedProduct extends StatelessWidget {
               itemBuilder: ((context, index) {
                 return const Padding(
                   padding: EdgeInsets.only(left: 20),
-                  child: ProductItem(),
+                  child: Text(''),
                 );
               })),
         ),
@@ -145,7 +157,8 @@ class _getMostViewedTitle extends StatelessWidget {
 }
 
 class _getBestSellerProducts extends StatelessWidget {
-  const _getBestSellerProducts({
+  final List<ProductModel> productList;
+  const _getBestSellerProducts(this.productList,{
     super.key,
   });
 
@@ -158,11 +171,11 @@ class _getBestSellerProducts extends StatelessWidget {
           height: 200,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: productList.length,
               itemBuilder: ((context, index) {
-                return const Padding(
+                return   Padding(
                   padding: EdgeInsets.only(left: 20),
-                  child: ProductItem(),
+                  child: ProductItem(productList[index]),
                 );
               })),
         ),
