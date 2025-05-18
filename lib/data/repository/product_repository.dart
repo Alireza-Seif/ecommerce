@@ -6,6 +6,8 @@ import 'package:ecommerce/util/api_exception.dart';
 
 abstract class IProductRepository {
   Future<Either<String, List<ProductModel>>> getProducts();
+  Future<Either<String, List<ProductModel>>> getHottest();
+  Future<Either<String, List<ProductModel>>> getBestSeller();
 }
 
 class ProductRepository extends IProductRepository {
@@ -14,6 +16,26 @@ class ProductRepository extends IProductRepository {
   Future<Either<String, List<ProductModel>>> getProducts() async {
     try {
       var response = await _dataSource.getProducts();
+      return right(response);
+    } on ApiException catch (ex) {
+      return Left(ex.message ?? 'خطا محتوای متنی ندارد');
+    }
+  }
+  
+  @override
+  Future<Either<String, List<ProductModel>>> getBestSeller() async{
+   try {
+      var response = await _dataSource.getBeastSeller ();
+      return right(response);
+    } on ApiException catch (ex) {
+      return Left(ex.message ?? 'خطا محتوای متنی ندارد');
+    }
+  }
+  
+  @override
+  Future<Either<String, List<ProductModel>>> getHottest() async{
+    try {
+      var response = await _dataSource.getHottest();
       return right(response);
     } on ApiException catch (ex) {
       return Left(ex.message ?? 'خطا محتوای متنی ندارد');

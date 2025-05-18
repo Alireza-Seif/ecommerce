@@ -24,6 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     BlocProvider.of<HomeBloc>(context).add(HomeGetInitializeEvent());
+    // BlocProvider.of<HomeBloc>(context).add(HomeGetBestSellerEvent());
+    // BlocProvider.of<HomeBloc>(context).add(Home());
     super.initState();
   }
 
@@ -34,20 +36,26 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            return CustomScrollView(
-              slivers: [
+            return CustomScrollView(slivers: [
+              if (state is HomeLoadingState) ...{
+                SliverToBoxAdapter(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            color: CustomColors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              } else ...{
                 _getSearchBox(),
-                if (state is HomeLoadingState) ...[
-                  SliverToBoxAdapter(
-                    child: SizedBox(
-                        width: 24,
-                        height: 24,
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          color: CustomColors.blue,
-                        ))),
-                  )
-                ],
                 if (state is HomeRequestSuccessState) ...[
                   state.bannerList.fold(
                     (exceptionMessages) {
@@ -75,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
                 _getBestSellerTitle(),
                 if (state is HomeRequestSuccessState) ...[
-                  state.productList.fold(
+                  state.bestSellerProductList.fold(
                     (exceptionMessages) {
                       return SliverToBoxAdapter(
                         child: Text(exceptionMessages),
@@ -87,9 +95,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                 ],
                 _getMostViewedTitle(),
-                _getMostViewedProduct(),
-              ],
-            );
+                if (state is HomeRequestSuccessState) ...[
+                  state.hottestProductList.fold(
+                    (exceptionMessages) {
+                      return SliverToBoxAdapter(
+                        child: Text(exceptionMessages),
+                      );
+                    },
+                    (productList) {
+                      return _getMostViewedProduct(productList);
+                    },
+                  )
+                ],
+              },
+            ]);
           },
         ),
       ),
@@ -98,7 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _getMostViewedProduct extends StatelessWidget {
-  const _getMostViewedProduct({
+  final List<ProductModel> productList;
+  _getMostViewedProduct(
+    this.productList, {
     super.key,
   });
 
@@ -113,9 +134,9 @@ class _getMostViewedProduct extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: 10,
               itemBuilder: ((context, index) {
-                return const Padding(
+                return Padding(
                   padding: EdgeInsets.only(left: 20),
-                  child: Text(''),
+                  child: ProductItem(productList[index]),
                 );
               })),
         ),
@@ -158,7 +179,8 @@ class _getMostViewedTitle extends StatelessWidget {
 
 class _getBestSellerProducts extends StatelessWidget {
   final List<ProductModel> productList;
-  const _getBestSellerProducts(this.productList,{
+  const _getBestSellerProducts(
+    this.productList, {
     super.key,
   });
 
@@ -173,7 +195,7 @@ class _getBestSellerProducts extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: productList.length,
               itemBuilder: ((context, index) {
-                return   Padding(
+                return Padding(
                   padding: EdgeInsets.only(left: 20),
                   child: ProductItem(productList[index]),
                 );

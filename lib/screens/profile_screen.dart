@@ -1,5 +1,4 @@
 import 'package:ecommerce/constants/colors.dart';
-import 'package:ecommerce/widgets/category_item_list.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {

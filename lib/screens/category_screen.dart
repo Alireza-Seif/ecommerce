@@ -3,7 +3,6 @@ import 'package:ecommerce/bloc/category/category_event.dart';
 import 'package:ecommerce/bloc/category/category_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/category_model.dart';
-import 'package:ecommerce/data/repository/category_repository.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
