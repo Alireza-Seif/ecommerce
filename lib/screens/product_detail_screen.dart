@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/data/repository/product_detail_repository.dart';
+import 'package:ecommerce/di/di.dart';
 import 'package:flutter/material.dart';
 
 class ProductDetailScreen extends StatelessWidget {
@@ -276,7 +278,7 @@ class ProductDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: [
-                        Image.asset('assets/images/icon_left_categroy.png'),
+                        Image.asset('assets/images/icon_left_category.png'),
                         const SizedBox(width: 10),
                         const Text(
                           'مشاهده',
@@ -310,7 +312,7 @@ class ProductDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: [
-                        Image.asset('assets/images/icon_left_categroy.png'),
+                        Image.asset('assets/images/icon_left_category.png'),
                         const SizedBox(width: 10),
                         const Text(
                           'مشاهده',
@@ -344,7 +346,7 @@ class ProductDetailScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       children: [
-                        Image.asset('assets/images/icon_left_categroy.png'),
+                        Image.asset('assets/images/icon_left_category.png'),
                         const SizedBox(width: 10),
                         const Text(
                           'مشاهده',
@@ -454,7 +456,7 @@ class ProductDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       PriceTagButton(),
-                      AddToBaasketButton(),
+                      AddToBasketButton(),
                     ],
                   ),
                 ),
@@ -467,8 +469,8 @@ class ProductDetailScreen extends StatelessWidget {
   }
 }
 
-class AddToBaasketButton extends StatelessWidget {
-  const AddToBaasketButton({super.key});
+class AddToBasketButton extends StatelessWidget {
+  const AddToBasketButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -485,20 +487,37 @@ class AddToBaasketButton extends StatelessWidget {
             ),
           ),
         ),
-        ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: const SizedBox(
-              height: 53,
-              width: 160,
-              child: Center(
-                child: Text(
-                  'افزودن سبد خرید',
-                  style: TextStyle(
-                      fontFamily: 'SB', fontSize: 16, color: Colors.white),
+        GestureDetector(
+          onTap: () async {
+            IProductDetailRepository repository = locator.get();
+            var response = await repository.getProductDetailImage();
+            response.fold(
+              (l) {
+
+                
+              },
+              (r) {
+                r.forEach((element) {
+                  print(element.imageUrl);
+                },);
+              },
+            );
+          },
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: const SizedBox(
+                height: 53,
+                width: 160,
+                child: Center(
+                  child: Text(
+                    'افزودن سبد خرید',
+                    style: TextStyle(
+                        fontFamily: 'SB', fontSize: 16, color: Colors.white),
+                  ),
                 ),
               ),
             ),
