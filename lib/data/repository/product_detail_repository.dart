@@ -16,9 +16,9 @@ class ProductDetailRepository extends IProductDetailRepository {
 
     try {
       final result = await _datasource.getGallery();
-      return Right(result);
+      return right(result);
     } on ApiException catch(ex) {
-      return Left(ex.message ?? 'unknown error');
+      return left(ex.message ?? 'unknown error');
     }
   }
 }

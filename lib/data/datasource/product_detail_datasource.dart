@@ -9,14 +9,14 @@ abstract class IProductDetailDatasource {
 
 class ProductDetailRemoteDatasource extends IProductDetailDatasource {
   final Dio _dio = locator.get();
-  @override
+  @override 
   Future<List<ProductImageModel>> getGallery() async {
     try {
-      Map<String, dynamic> qParams = {'filter': 'product_id="78n4wqor3hhnkju"'};
+      Map<String, dynamic> qParams = {'filter': 'product_id="jtkxewjcnfuh34c"'};
       var response = await _dio.get('collections/gallery/records',
           queryParameters: qParams );
       return response.data['items']
-          .map<ProductImageModel>(
+          .map<ProductImageModel>(  
               (jsonObject) => ProductImageModel.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {

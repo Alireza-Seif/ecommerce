@@ -9,8 +9,8 @@ class ProductImageModel {
 
   factory ProductImageModel.fromJson(Map<String, dynamic> jsonObject) {
     return ProductImageModel(
-      'https://startflutter.ir/api/files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['imageUrl']}',
-      jsonObject['productUrl'],
+      'https://startflutter.ir/api/files/${jsonObject['collectionId']}/${jsonObject['id']}/${jsonObject['image']}',
+      jsonObject['product_id'],
     );
   }
 }
