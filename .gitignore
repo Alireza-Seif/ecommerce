@@ -33,7 +33,6 @@ migrate_working_dir/
 .pub/
 .vscode/
 .vscode/settings.json
-.vscode
 /build/
 
 # Symbolication related
