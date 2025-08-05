@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 .vscode/
+.vscode/settings.json
+.vscode
 /build/
 
 # Symbolication related

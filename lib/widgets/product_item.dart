@@ -1,8 +1,10 @@
+import 'package:ecommerce/bloc/product/product_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/screens/product_detail_screen.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductItem extends StatelessWidget {
   ProductModel productItem;
@@ -15,8 +17,14 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ProductDetailScreen()));
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => ProductBloc(),
+              child: ProductDetailScreen(),
+            ),
+          ),
+        );
       },
       child: Container(
         height: 216,

@@ -12,7 +12,7 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
   @override 
   Future<List<ProductImageModel>> getGallery() async {
     try {
-      Map<String, dynamic> qParams = {'filter': 'product_id="jtkxewjcnfuh34c"'};
+      Map<String, dynamic> qParams = {'filter': 'product_id="78n4wqor3hhnkju"'};
       var response = await _dio.get('collections/gallery/records',
           queryParameters: qParams );
       return response.data['items']
