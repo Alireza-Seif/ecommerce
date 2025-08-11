@@ -5,6 +5,7 @@ import 'package:ecommerce/bloc/product/product_event.dart';
 import 'package:ecommerce/bloc/product/product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
+import 'package:ecommerce/data/model/variant_type_model.dart';
 import 'package:ecommerce/data/repository/product_detail_repository.dart';
 import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
@@ -92,7 +93,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   ),
                 ),
                 if (state is ProductDetailResponseState) ...{
-                  state.getProductImages.fold((l) {
+                  state.productImages.fold((l) {
                     return SliverToBoxAdapter(
                       child: Text(l),
                     );
@@ -100,60 +101,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     return GalleryWidget(productImageList);
                   })
                 },
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 20, right: 44, left: 44),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        const Text(
-                          'انتخاب رنگ',
-                          style: TextStyle(fontFamily: 'SM', fontSize: 12),
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Container(
-                              height: 26,
-                              width: 26,
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: const BoxDecoration(
-                                color: Colors.blue,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 26,
-                              width: 26,
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: const BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 26,
-                              width: 26,
-                              margin: const EdgeInsets.only(left: 10),
-                              decoration: const BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                if (state is ProductDetailResponseState) ...{
+                  state.productVariant.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (variantList) {
+                    for (var variant in variantList) {
+                      print(variant.variantType.title);
+                      for (var variantObject in variant.variantList) {
+                        print(variantObject.name);
+                      }
+                    }
+                    return SliverToBoxAdapter(
+                      child: Text('data'),
+                    );
+                  })
+                },
                 SliverToBoxAdapter(
                   child: Padding(
                     padding:
@@ -442,6 +406,71 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 }
 
+class ColorVariant extends StatelessWidget {
+  VariantType variantType;
+  ColorVariant(
+    this.variantType, {
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20, right: 44, left: 44),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              variantType.title!,
+              style: TextStyle(fontFamily: 'SM', fontSize: 12),
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Container(
+                  height: 26,
+                  width: 26,
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: const BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 26,
+                  width: 26,
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: const BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                ),
+                Container(
+                  height: 26,
+                  width: 26,
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: const BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class GalleryWidget extends StatefulWidget {
   List<ProductImageModel> productImageList;
   int selectedItem = 0;
@@ -499,7 +528,7 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                             radius: 10,
                           )),
                       const Spacer(),
-                      Image.asset('assets/images/icon_favorite_deactive.png'),
+                      Image.asset('assets/images/icon_favorite_deactivate.png'),
                     ],
                   ),
                 ),
