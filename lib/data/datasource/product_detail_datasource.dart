@@ -49,10 +49,8 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
   @override
   Future<List<Variant>> getVariant() async {
     try {
-      Map<String, String> qParams = {'filter': 'product_id="at0y1gm0t65j62j"'};
-      var response = await _dio.get(
-        'collections/variants/records',
-      );
+      // Map<String, String> qParams = {'filter': 'product_id="at0y1gm0t65j62j"'};
+      var response = await _dio.get('collections/variants/records');
       return response.data['items']
           .map<Variant>((jsonObject) => Variant.fromJson(jsonObject))
           .toList();

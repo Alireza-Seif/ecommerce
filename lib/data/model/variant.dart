@@ -3,7 +3,7 @@ class Variant {
   String? name;
   String? typeId;
   String? value;
-  String? pricingChange;
+  int? pricingChange;
 
   Variant(this.id, this.name, this.typeId, this.value, this.pricingChange);
 

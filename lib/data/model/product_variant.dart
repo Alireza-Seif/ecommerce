@@ -5,5 +5,5 @@ class ProductVariant {
   VariantType variantType;
   List<Variant> variantList;
 
-  ProductVariant(this.variantType, this.variantList);
+   ProductVariant(this.variantType, this.variantList);
 }
