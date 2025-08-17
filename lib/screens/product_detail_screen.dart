@@ -419,37 +419,12 @@ class VariantContainer extends StatelessWidget {
               style: TextStyle(fontFamily: 'SM', fontSize: 12),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ..._buildColorVariantsOptions(
-                    productVariantList[0].variantList),
-              ],
-            ),
+            ColorVariantList(productVariantList[0].variantList),
           ],
         ),
       ),
     );
   }
-}
-
-List<Widget> _buildColorVariantsOptions(List<Variant> variantList) {
-  List<Widget> colorWidget = [];
-  for (var colorVariant in variantList) {
-    String categoryColor = 'ff${colorVariant.value}';
-    int hexColor = int.parse(categoryColor, radix: 16);
-    var item = Container(
-      margin: EdgeInsets.only(left: 8),
-      height: 26,
-      width: 26,
-      decoration: BoxDecoration(
-        color: Color(hexColor),
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-      ),
-    );
-    colorWidget.add(item);
-  }
-  return colorWidget;
 }
 
 class GalleryWidget extends StatefulWidget {
@@ -705,6 +680,55 @@ class PriceTagButton extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class ColorVariantList extends StatefulWidget {
+  List<Variant> variantList;
+  ColorVariantList(this.variantList, {super.key});
+
+  @override
+  State<ColorVariantList> createState() => _ColorVariantListState();
+}
+
+class _ColorVariantListState extends State<ColorVariantList> {
+  List<Widget> colorWidget = [];
+
+  @override
+  void initState() {
+    for (var colorVariant in widget.variantList) {
+      String categoryColor = 'ff${colorVariant.value}';
+      int hexColor = int.parse(categoryColor, radix: 16);
+      var item = Container(
+        margin: EdgeInsets.only(left: 8),
+        height: 26,
+        width: 26,
+        decoration: BoxDecoration(
+          color: Color(hexColor),
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      );
+      colorWidget.add(item);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        height: 26,
+        child: ListView.builder(
+          
+          scrollDirection: Axis.horizontal,
+          itemCount: colorWidget.length,
+          itemBuilder: (context, index) {
+            return colorWidget[index];
+          },
+        ),
+      ),
     );
   }
 }
