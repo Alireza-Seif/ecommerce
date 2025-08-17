@@ -7,6 +7,7 @@ import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_variant.dart';
 import 'package:ecommerce/data/model/variant.dart';
+import 'package:ecommerce/data/model/variant_type_model.dart';
 import 'package:ecommerce/data/repository/product_detail_repository.dart';
 import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
@@ -108,7 +109,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       child: Text(l),
                     );
                   }, (productVariantList) {
-                    return VariantContainer(productVariantList);
+                    return VariantContainerGenerator(productVariantList);
                   })
                 },
 
@@ -400,40 +401,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 }
 
-class VariantContainer extends StatelessWidget {
-  List<ProductVariant> productVariantList;
-  VariantContainer(
-    this.productVariantList, {
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20, right: 44, left: 44),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Text(
-              productVariantList[0].variantType.title!,
-              style: TextStyle(fontFamily: 'SM', fontSize: 12),
-            ),
-            const SizedBox(height: 10),
-            ColorVariantList(productVariantList[0].variantList),
-            Text(
-              productVariantList[1].variantType.title!,
-              style: TextStyle(fontFamily: 'SM', fontSize: 12),
-            ),
-            const SizedBox(height: 10),
-            StorageVariantList(productVariantList[1].variantList),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class GalleryWidget extends StatefulWidget {
   List<ProductImageModel> productImageList;
   int selectedItem = 0;
@@ -556,36 +523,20 @@ class AddToBasketButton extends StatelessWidget {
             ),
           ),
         ),
-        GestureDetector(
-          onTap: () async {
-            IProductDetailRepository repository = locator.get();
-            var response = await repository.getProductDetailImage();
-            response.fold(
-              (l) {},
-              (r) {
-                r.forEach(
-                  (element) {
-                    print(element.imageUrl);
-                  },
-                );
-              },
-            );
-          },
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(15),
-            ),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-              child: const SizedBox(
-                height: 53,
-                width: 160,
-                child: Center(
-                  child: Text(
-                    'افزودن سبد خرید',
-                    style: TextStyle(
-                        fontFamily: 'SB', fontSize: 16, color: Colors.white),
-                  ),
+        ClipRRect(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15),
+          ),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: const SizedBox(
+              height: 53,
+              width: 160,
+              child: Center(
+                child: Text(
+                  'افزودن سبد خرید',
+                  style: TextStyle(
+                      fontFamily: 'SB', fontSize: 16, color: Colors.white),
                 ),
               ),
             ),
@@ -739,6 +690,59 @@ class _ColorVariantListState extends State<ColorVariantList> {
   }
 }
 
+class VoltageVariantList extends StatefulWidget {
+  List<Variant> voltageVariantList;
+  VoltageVariantList(this.voltageVariantList, {super.key});
+
+  @override
+  State<VoltageVariantList> createState() => _VoltageVariantListState();
+}
+
+class _VoltageVariantListState extends State<VoltageVariantList> {
+  List<Widget> voltageWidgetList = [];
+  @override
+  void initState() {
+    for (var voltageVariant in widget.voltageVariantList) {
+      var item = Container(
+        height: 25,
+        margin: const EdgeInsets.only(left: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: const BorderRadius.all(
+              Radius.circular(8),
+            ),
+            border: Border.all(width: 1, color: CustomColors.grey)),
+        child: Center(
+          child: Text(
+            voltageVariant.value!,
+            style: TextStyle(fontFamily: 'SB', fontSize: 12),
+          ),
+        ),
+      );
+      voltageWidgetList.add(item);
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: SizedBox(
+        height: 26,
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: voltageWidgetList.length,
+          itemBuilder: (context, index) {
+            return voltageWidgetList[index];
+          },
+        ),
+      ),
+    );
+  }
+}
+
 class StorageVariantList extends StatefulWidget {
   List<Variant> storageVariants;
   StorageVariantList(this.storageVariants, {super.key});
@@ -787,6 +791,58 @@ class _StorageVariantListState extends State<StorageVariantList> {
             return storageWidgetList[index];
           },
         ),
+      ),
+    );
+  }
+}
+
+class VariantContainerGenerator extends StatelessWidget {
+  List<ProductVariant> productVariantList;
+  VariantContainerGenerator(this.productVariantList, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          for (var productVariant in productVariantList) ...{
+            if (productVariant.variantList.isNotEmpty) ...{
+              VariantGeneratorChild(productVariant)
+            }
+          }
+        ],
+      ),
+    );
+  }
+}
+
+class VariantGeneratorChild extends StatelessWidget {
+  ProductVariant productVariant;
+  VariantGeneratorChild(this.productVariant, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsetsGeometry.only(left: 44, right: 44, top: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          Text(
+            productVariant.variantType.title!,
+            style: TextStyle(fontFamily: 'SM', fontSize: 12),
+          ),
+          const SizedBox(height: 10),
+          if (productVariant.variantType.type == VariantTypeEnum.COLOR) ...{
+            ColorVariantList(productVariant.variantList)
+          },
+          if (productVariant.variantType.type == VariantTypeEnum.STORAGE) ...{
+            StorageVariantList(productVariant.variantList)
+          },
+          if (productVariant.variantType.type == VariantTypeEnum.VOLTAGE) ...{
+            VoltageVariantList(productVariant.variantList)
+          },
+        ],
       ),
     );
   }
