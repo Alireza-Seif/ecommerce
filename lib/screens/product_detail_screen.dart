@@ -5,7 +5,8 @@ import 'package:ecommerce/bloc/product/product_event.dart';
 import 'package:ecommerce/bloc/product/product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
-import 'package:ecommerce/data/model/variant_type_model.dart';
+import 'package:ecommerce/data/model/product_variant.dart';
+import 'package:ecommerce/data/model/variant.dart';
 import 'package:ecommerce/data/repository/product_detail_repository.dart';
 import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
@@ -106,16 +107,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     return SliverToBoxAdapter(
                       child: Text(l),
                     );
-                  }, (variantList) {
-                    for (var variant in variantList) {
-                      print(variant.variantType.title);
-                      for (var variantObject in variant.variantList) {
-                        print(variantObject.name);
-                      }
-                    }
-                    return SliverToBoxAdapter(
-                      child: Text('data'),
-                    );
+                  }, (productVariantList) {
+                    return VariantContainer(productVariantList);
                   })
                 },
                 SliverToBoxAdapter(
@@ -406,10 +399,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 }
 
-class ColorVariant extends StatelessWidget {
-  VariantType variantType;
-  ColorVariant(
-    this.variantType, {
+class VariantContainer extends StatelessWidget {
+  List<ProductVariant> productVariantList;
+  VariantContainer(
+    this.productVariantList, {
     super.key,
   });
 
@@ -422,53 +415,41 @@ class ColorVariant extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             Text(
-              variantType.title!,
+              productVariantList[0].variantType.title!,
               style: TextStyle(fontFamily: 'SM', fontSize: 12),
             ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  height: 26,
-                  width: 26,
-                  margin: const EdgeInsets.only(left: 10),
-                  decoration: const BoxDecoration(
-                    color: Colors.blue,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 26,
-                  width: 26,
-                  margin: const EdgeInsets.only(left: 10),
-                  decoration: const BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 26,
-                  width: 26,
-                  margin: const EdgeInsets.only(left: 10),
-                  decoration: const BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(8),
-                    ),
-                  ),
-                ),
+                ..._buildColorVariantsOptions(
+                    productVariantList[0].variantList),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
   }
+}
+
+List<Widget> _buildColorVariantsOptions(List<Variant> variantList) {
+  List<Widget> colorWidget = [];
+  for (var colorVariant in variantList) {
+    String categoryColor = 'ff${colorVariant.value}';
+    int hexColor = int.parse(categoryColor, radix: 16);
+    var item = Container(
+      margin: EdgeInsets.only(left: 8),
+      height: 26,
+      width: 26,
+      decoration: BoxDecoration(
+        color: Color(hexColor),
+        borderRadius: BorderRadius.all(Radius.circular(8)),
+      ),
+    );
+    colorWidget.add(item);
+  }
+  return colorWidget;
 }
 
 class GalleryWidget extends StatefulWidget {

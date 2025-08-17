@@ -49,8 +49,9 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
   @override
   Future<List<Variant>> getVariant() async {
     try {
-      // Map<String, String> qParams = {'filter': 'product_id="at0y1gm0t65j62j"'};
-      var response = await _dio.get('collections/variants/records');
+      Map<String, String> qParams = {'filter': 'product_id="at0y1gm0t65j62j"'};
+      var response = await _dio.get('collections/variants/records',
+          queryParameters: qParams);
       return response.data['items']
           .map<Variant>((jsonObject) => Variant.fromJson(jsonObject))
           .toList();
@@ -69,9 +70,9 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
     List<ProductVariant> productVariantList = [];
 
     for (var variantType in variantTypeList) {
-      variantList.where((element) => element.typeId == variantType.id).toList();
+     var variant = variantList.where((element) => element.typeId == variantType.id).toList();
 
-      productVariantList.add(ProductVariant(variantType, variantList));
+      productVariantList.add(ProductVariant(variantType, variant));
     }
     return productVariantList;
   }
