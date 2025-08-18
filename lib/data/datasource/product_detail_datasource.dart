@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_variant.dart';
 import 'package:ecommerce/data/model/variant.dart';
@@ -11,6 +12,7 @@ abstract class IProductDetailDatasource {
   Future<List<VariantType>> getVariantTypes();
   Future<List<Variant>> getVariant();
   Future<List<ProductVariant>> getProductVariants();
+  Future<CategoryModel> getProductCategory(String categoryId);
 }
 
 class ProductDetailRemoteDatasource extends IProductDetailDatasource {
@@ -69,11 +71,33 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
 
     List<ProductVariant> productVariantList = [];
 
-    for (var variantType in variantTypeList) {
-     var variant = variantList.where((element) => element.typeId == variantType.id).toList();
+    try {
+      for (var variantType in variantTypeList) {
+        var variant = variantList
+            .where((element) => element.typeId == variantType.id)
+            .toList();
 
-      productVariantList.add(ProductVariant(variantType, variant));
+        productVariantList.add(ProductVariant(variantType, variant));
+      }
+      return productVariantList;
+    } on DioException catch (ex) {
+      throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (e) {
+      throw ApiException(0, 'unknown error');
     }
-    return productVariantList;
+  }
+
+  @override
+  Future<CategoryModel> getProductCategory(String categoryId) async {
+    try {
+      Map<String, String> qParams = {'filter': 'id="$categoryId"'};
+      var response = await _dio.get('collections/category/records',
+          queryParameters: qParams);
+      return CategoryModel.fromMapJson(response.data['items'][0]);
+    } on DioException catch (ex) {
+      throw ApiException(ex.response?.statusCode, ex.response?.data['message']);
+    } catch (e) {
+      throw ApiException(0, 'unknown error');
+    }
   }
 }

@@ -25,8 +25,8 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   void initState() {
-    BlocProvider.of<ProductBloc>(context)
-        .add(ProductInitializedEvent(widget.product.id));
+    BlocProvider.of<ProductBloc>(context).add(
+        ProductInitializedEvent(widget.product.id, widget.product.categoryId));
     super.initState();
   }
 
@@ -49,42 +49,59 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   )
                 },
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 10, bottom: 32),
-                    child: Container(
-                      height: 46,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(15),
+                if (state is ProductDetailResponseState) ...{
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 10, bottom: 32),
+                      child: Container(
+                        height: 46,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15),
+                          ),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Row(
-                          children: [
-                            Image.asset('assets/images/icon_apple_blue.png'),
-                            const Expanded(
-                              child: Text(
-                                'آیفون',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: 'SB',
-                                  fontSize: 16,
-                                  color: CustomColors.blue,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            children: [
+                              Image.asset('assets/images/icon_apple_blue.png'),
+                              Expanded(
+                                child: state.productCategory.fold(
+                                  (l) {
+                                    return Text(
+                                      l,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'SB',
+                                        fontSize: 16,
+                                        color: CustomColors.blue,
+                                      ),
+                                    );
+                                  },
+                                  (productCategory) {
+                                    return Text(
+                                      productCategory.title!,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: 'SB',
+                                        fontSize: 16,
+                                        color: CustomColors.blue,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 16),
-                            Image.asset('assets/images/icon_back.png'),
-                          ],
+                              const SizedBox(width: 16),
+                              Image.asset('assets/images/icon_back.png'),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
+                },
                 const SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 20),
@@ -375,7 +392,6 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                       const Spacer(),
                       SizedBox(
                           height: double.infinity,
-                          
                           child: CachedImage(
                             imageUrl: widget.productImageList.isEmpty
                                 ? widget.defaultProductThumbnail!

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:ecommerce/data/datasource/product_detail_datasource.dart';
+import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_variant.dart';
 import 'package:ecommerce/data/model/variant.dart';
@@ -8,18 +9,20 @@ import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
 
 abstract class IProductDetailRepository {
-  Future<Either<String, List<ProductImageModel>>> getProductDetailImage(String productId);
+  Future<Either<String, List<ProductImageModel>>> getProductDetailImage(
+      String productId);
   Future<Either<String, List<VariantType>>> getVariantTypes();
   Future<Either<String, List<Variant>>> getVariants();
   Future<Either<String, List<ProductVariant>>> getProductVariants();
+  Future<Either<String, CategoryModel>> getProductCategory(String categoryId);
 }
 
 class ProductDetailRepository extends IProductDetailRepository {
   final IProductDetailDatasource _datasource = locator.get();
 
   @override
-  Future<Either<String, List<ProductImageModel>>>
-      getProductDetailImage(String productId) async {
+  Future<Either<String, List<ProductImageModel>>> getProductDetailImage(
+      String productId) async {
     try {
       final result = await _datasource.getGallery(productId);
       return right(result);
@@ -52,6 +55,17 @@ class ProductDetailRepository extends IProductDetailRepository {
   Future<Either<String, List<ProductVariant>>> getProductVariants() async {
     try {
       final response = await _datasource.getProductVariants();
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message ?? 'unknown error');
+    }
+  }
+
+  @override
+  Future<Either<String, CategoryModel>> getProductCategory(
+      String categoryId) async {
+    try {
+      final response = await _datasource.getProductCategory(categoryId);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message ?? 'unknown error');
