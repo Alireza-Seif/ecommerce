@@ -10,8 +10,8 @@ import 'package:ecommerce/util/api_exception.dart';
 abstract class IProductDetailDatasource {
   Future<List<ProductImageModel>> getGallery(String productId);
   Future<List<VariantType>> getVariantTypes();
-  Future<List<Variant>> getVariant();
-  Future<List<ProductVariant>> getProductVariants();
+  Future<List<Variant>> getVariant(String productId);
+  Future<List<ProductVariant>> getProductVariants(String productId);
   Future<CategoryModel> getProductCategory(String categoryId);
 }
 
@@ -49,9 +49,9 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
   }
 
   @override
-  Future<List<Variant>> getVariant() async {
+  Future<List<Variant>> getVariant(String productId) async {
     try {
-      Map<String, String> qParams = {'filter': 'product_id="5vvww65pv6nviw6 "'};
+      Map<String, String> qParams = {'filter': 'product_id="$productId"'};
       var response = await _dio.get('collections/variants/records',
           queryParameters: qParams);
       return response.data['items']
@@ -65,9 +65,9 @@ class ProductDetailRemoteDatasource extends IProductDetailDatasource {
   }
 
   @override
-  Future<List<ProductVariant>> getProductVariants() async {
+  Future<List<ProductVariant>> getProductVariants(String productId) async {
     var variantTypeList = await getVariantTypes();
-    var variantList = await getVariant();
+    var variantList = await getVariant(productId);
 
     List<ProductVariant> productVariantList = [];
 

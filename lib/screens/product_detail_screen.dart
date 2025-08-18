@@ -102,11 +102,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                 },
-                const SliverToBoxAdapter(
+                 SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(bottom: 20),
                     child: Text(
-                      'Se آیفون 2022',
+                      widget.product.name,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontFamily: 'SB', fontSize: 16, color: Colors.black),

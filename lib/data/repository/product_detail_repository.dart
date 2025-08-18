@@ -12,8 +12,9 @@ abstract class IProductDetailRepository {
   Future<Either<String, List<ProductImageModel>>> getProductDetailImage(
       String productId);
   Future<Either<String, List<VariantType>>> getVariantTypes();
-  Future<Either<String, List<Variant>>> getVariants();
-  Future<Either<String, List<ProductVariant>>> getProductVariants();
+  // Future<Either<String, List<Variant>>> getVariants(productId);
+  Future<Either<String, List<ProductVariant>>> getProductVariants(
+      String productId);
   Future<Either<String, CategoryModel>> getProductCategory(String categoryId);
 }
 
@@ -42,9 +43,9 @@ class ProductDetailRepository extends IProductDetailRepository {
   }
 
   @override
-  Future<Either<String, List<Variant>>> getVariants() async {
+  Future<Either<String, List<Variant>>> getVariants(String productId) async {
     try {
-      final result = await _datasource.getVariant();
+      final result = await _datasource.getVariant(productId);
       return right(result);
     } on ApiException catch (ex) {
       return left(ex.message ?? 'unknown error');
@@ -52,9 +53,10 @@ class ProductDetailRepository extends IProductDetailRepository {
   }
 
   @override
-  Future<Either<String, List<ProductVariant>>> getProductVariants() async {
+  Future<Either<String, List<ProductVariant>>> getProductVariants(
+      String productId) async {
     try {
-      final response = await _datasource.getProductVariants();
+      final response = await _datasource.getProductVariants(productId);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message ?? 'unknown error');
