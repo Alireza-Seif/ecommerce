@@ -651,38 +651,48 @@ class ColorVariantList extends StatefulWidget {
 }
 
 class _ColorVariantListState extends State<ColorVariantList> {
-  List<Widget> colorWidget = [];
-
-  @override
-  void initState() {
-    for (var colorVariant in widget.variantList) {
-      String categoryColor = 'ff${colorVariant.value}';
-      int hexColor = int.parse(categoryColor, radix: 16);
-      var item = Container(
-        margin: EdgeInsets.only(left: 8),
-        height: 26,
-        width: 26,
-        decoration: BoxDecoration(
-          color: Color(hexColor),
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-        ),
-      );
-      colorWidget.add(item);
-    }
-    super.initState();
-  }
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: SizedBox(
-        height: 26,
+        height: 30,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: colorWidget.length,
+          itemCount: widget.variantList.length,
           itemBuilder: (context, index) {
-            return colorWidget[index];
+            String categoryColor = 'ff${widget.variantList[index].value}';
+            int hexColor = int.parse(categoryColor, radix: 16);
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedIndex = index;
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(left: 8),
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
+                  color: Color(hexColor),
+                  border: selectedIndex == index
+                      ? Border.all(
+                          width: 3,
+                          color: Color(hexColor),
+                          strokeAlign: BorderSide.strokeAlignOutside)
+                      : null,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(hexColor),
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                  ),
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -699,31 +709,7 @@ class VoltageVariantList extends StatefulWidget {
 }
 
 class _VoltageVariantListState extends State<VoltageVariantList> {
-  List<Widget> voltageWidgetList = [];
-  @override
-  void initState() {
-    for (var voltageVariant in widget.voltageVariantList) {
-      var item = Container(
-        height: 25,
-        margin: const EdgeInsets.only(left: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(8),
-            ),
-            border: Border.all(width: 1, color: CustomColors.grey)),
-        child: Center(
-          child: Text(
-            voltageVariant.value!,
-            style: TextStyle(fontFamily: 'SB', fontSize: 12),
-          ),
-        ),
-      );
-      voltageWidgetList.add(item);
-    }
-    super.initState();
-  }
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -733,9 +719,33 @@ class _VoltageVariantListState extends State<VoltageVariantList> {
         height: 26,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: voltageWidgetList.length,
+          itemCount: widget.voltageVariantList.length,
           itemBuilder: (context, index) {
-            return voltageWidgetList[index];
+            return GestureDetector(
+              onTap: () => setState(() {
+                selectedIndex = index;
+              }),
+              child: Container(
+                height: 25,
+                margin: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                    border: selectedIndex == index
+                        ? Border.all(
+                            width: 1, color: CustomColors.blueIndicator)
+                        : Border.all(width: 1, color: CustomColors.grey)),
+                child: Center(
+                  child: Text(
+                    widget.voltageVariantList[index].value!,
+                    style: TextStyle(fontFamily: 'SB', fontSize: 12),
+                  ),
+                ),
+              ),
+            );
           },
         ),
       ),
@@ -752,31 +762,7 @@ class StorageVariantList extends StatefulWidget {
 }
 
 class _StorageVariantListState extends State<StorageVariantList> {
-  List<Widget> storageWidgetList = [];
-  @override
-  void initState() {
-    for (var storageVariant in widget.storageVariants) {
-      var item = Container(
-        height: 25,
-        margin: const EdgeInsets.only(left: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(8),
-            ),
-            border: Border.all(width: 1, color: CustomColors.grey)),
-        child: Center(
-          child: Text(
-            storageVariant.value!,
-            style: TextStyle(fontFamily: 'SB', fontSize: 12),
-          ),
-        ),
-      );
-      storageWidgetList.add(item);
-    }
-    super.initState();
-  }
+  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -786,9 +772,33 @@ class _StorageVariantListState extends State<StorageVariantList> {
         height: 26,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: storageWidgetList.length,
+          itemCount: widget.storageVariants.length,
           itemBuilder: (context, index) {
-            return storageWidgetList[index];
+            return GestureDetector(
+              onTap: () => setState(() {
+                selectedIndex = index;
+              }),
+              child: Container(
+                height: 25,
+                margin: const EdgeInsets.only(left: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(8),
+                    ),
+                    border: selectedIndex == index
+                        ? Border.all(
+                            width: 2, color: CustomColors.blueIndicator)
+                        : Border.all(width: 1, color: CustomColors.grey)),
+                child: Center(
+                  child: Text(
+                    widget.storageVariants[index].value!,
+                    style: TextStyle(fontFamily: 'SB', fontSize: 12),
+                  ),
+                ),
+              ),
+            );
           },
         ),
       ),
