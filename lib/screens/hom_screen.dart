@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _getMostViewedProduct extends StatelessWidget {
   final List<ProductModel> productList;
-  _getMostViewedProduct(
+  const _getMostViewedProduct(
     this.productList, {
     super.key,
   });
@@ -132,7 +132,7 @@ class _getMostViewedProduct extends StatelessWidget {
           height: 200,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 10,
+              itemCount: productList.length,
               itemBuilder: ((context, index) {
                 return Padding(
                   padding: EdgeInsets.only(left: 20),
