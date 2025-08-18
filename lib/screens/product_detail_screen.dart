@@ -5,17 +5,18 @@ import 'package:ecommerce/bloc/product/product_event.dart';
 import 'package:ecommerce/bloc/product/product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
+import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/data/model/product_variant.dart';
 import 'package:ecommerce/data/model/variant.dart';
 import 'package:ecommerce/data/model/variant_type_model.dart';
-import 'package:ecommerce/data/repository/product_detail_repository.dart';
-import 'package:ecommerce/di/di.dart';
+
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  const ProductDetailScreen({super.key});
+  ProductModel product;
+  ProductDetailScreen(this.product, {super.key});
 
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
@@ -24,7 +25,8 @@ class ProductDetailScreen extends StatefulWidget {
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   void initState() {
-    BlocProvider.of<ProductBloc>(context).add(ProductInitializedEvent());
+    BlocProvider.of<ProductBloc>(context)
+        .add(ProductInitializedEvent(widget.product.id));
     super.initState();
   }
 
@@ -100,7 +102,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       child: Text(l),
                     );
                   }, (productImageList) {
-                    return GalleryWidget(productImageList);
+                    return GalleryWidget(
+                        widget.product.thumbnail, productImageList);
                   })
                 },
                 if (state is ProductDetailResponseState) ...{
@@ -112,88 +115,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     return VariantContainerGenerator(productVariantList);
                   })
                 },
-
-                // SliverToBoxAdapter(
-                //   child: Padding(
-                //     padding:
-                //         const EdgeInsets.only(top: 20, right: 44, left: 44),
-                //     child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.end,
-                //       children: [
-                //         const Text(
-                //           'انتخاب حافظه داخلی',
-                //           style: TextStyle(fontFamily: 'SM', fontSize: 12),
-                //         ),
-                //         const SizedBox(height: 10),
-                //         Row(
-                //           mainAxisAlignment: MainAxisAlignment.end,
-                //           children: [
-                //             Container(
-                //               height: 25,
-                //               margin: const EdgeInsets.only(left: 10),
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 20),
-                //               decoration: BoxDecoration(
-                //                   color: Colors.white,
-                //                   borderRadius: const BorderRadius.all(
-                //                     Radius.circular(8),
-                //                   ),
-                //                   border: Border.all(
-                //                       width: 1, color: CustomColors.grey)),
-                //               child: const Center(
-                //                 child: Text(
-                //                   '128',
-                //                   style:
-                //                       TextStyle(fontFamily: 'SB', fontSize: 12),
-                //                 ),
-                //               ),
-                //             ),
-                //             Container(
-                //               height: 25,
-                //               margin: const EdgeInsets.only(left: 10),
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 20),
-                //               decoration: BoxDecoration(
-                //                   color: Colors.white,
-                //                   borderRadius: const BorderRadius.all(
-                //                     Radius.circular(8),
-                //                   ),
-                //                   border: Border.all(
-                //                       width: 1, color: CustomColors.grey)),
-                //               child: const Center(
-                //                 child: Text(
-                //                   '128',
-                //                   style:
-                //                       TextStyle(fontFamily: 'SB', fontSize: 12),
-                //                 ),
-                //               ),
-                //             ),
-                //             Container(
-                //               height: 25,
-                //               margin: const EdgeInsets.only(left: 10),
-                //               padding:
-                //                   const EdgeInsets.symmetric(horizontal: 20),
-                //               decoration: BoxDecoration(
-                //                   color: Colors.white,
-                //                   borderRadius: const BorderRadius.all(
-                //                     Radius.circular(8),
-                //                   ),
-                //                   border: Border.all(
-                //                       width: 1, color: CustomColors.grey)),
-                //               child: const Center(
-                //                 child: Text(
-                //                   '128',
-                //                   style:
-                //                       TextStyle(fontFamily: 'SB', fontSize: 12),
-                //                 ),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 SliverToBoxAdapter(
                   child: Container(
                     height: 46,
@@ -403,8 +324,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
 class GalleryWidget extends StatefulWidget {
   List<ProductImageModel> productImageList;
+  String? defaultProductThumbnail;
   int selectedItem = 0;
+
   GalleryWidget(
+    this.defaultProductThumbnail,
     this.productImageList, {
     super.key,
   });
@@ -451,10 +375,12 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                       const Spacer(),
                       SizedBox(
                           height: double.infinity,
+                          
                           child: CachedImage(
-                            imageUrl: widget
-                                .productImageList[widget.selectedItem]
-                                .imageUrl!,
+                            imageUrl: widget.productImageList.isEmpty
+                                ? widget.defaultProductThumbnail!
+                                : widget.productImageList[widget.selectedItem]
+                                    .imageUrl!,
                             radius: 10,
                           )),
                       const Spacer(),
@@ -463,40 +389,42 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                   ),
                 ),
               ),
-              Container(
-                height: 70,
-                padding: const EdgeInsets.symmetric(horizontal: 44),
-                child: ListView.builder(
-                  itemCount: widget.productImageList.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          widget.selectedItem = index;
-                        });
-                      },
-                      child: Container(
-                        height: 70,
-                        width: 70,
-                        margin: const EdgeInsets.only(left: 20),
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border:
-                              Border.all(width: 1, color: CustomColors.grey),
+              if (widget.productImageList.isNotEmpty) ...{
+                Container(
+                  height: 70,
+                  padding: const EdgeInsets.symmetric(horizontal: 44),
+                  child: ListView.builder(
+                    itemCount: widget.productImageList.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            widget.selectedItem = index;
+                          });
+                        },
+                        child: Container(
+                          height: 70,
+                          width: 70,
+                          margin: const EdgeInsets.only(left: 20),
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            border:
+                                Border.all(width: 1, color: CustomColors.grey),
+                          ),
+                          child: CachedImage(
+                            imageUrl: widget.productImageList[index].imageUrl!,
+                            radius: 10,
+                          ),
                         ),
-                        child: CachedImage(
-                          imageUrl: widget.productImageList[index].imageUrl!,
-                          radius: 10,
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
+              }
             ],
           ),
         ),
