@@ -6,6 +6,7 @@ import 'package:ecommerce/bloc/product/product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_model.dart';
+import 'package:ecommerce/data/model/product_property_model.dart';
 import 'package:ecommerce/data/model/product_variant.dart';
 import 'package:ecommerce/data/model/variant.dart';
 import 'package:ecommerce/data/model/variant_type_model.dart';
@@ -132,40 +133,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     return VariantContainerGenerator(productVariantList);
                   })
                 },
-                SliverToBoxAdapter(
-                  child: Container(
-                    height: 46,
-                    margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(width: 1, color: CustomColors.grey),
-                      borderRadius: const BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        children: [
-                          Image.asset('assets/images/icon_left_category.png'),
-                          const SizedBox(width: 10),
-                          const Text(
-                            'مشاهده',
-                            style: TextStyle(
-                                fontFamily: 'SB',
-                                fontSize: 12,
-                                color: CustomColors.blue),
-                          ),
-                          const Spacer(),
-                          const Text(
-                            ': مشخصات فنی',
-                            style: TextStyle(fontFamily: 'SM'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                if (state is ProductDetailResponseState) ...{
+                  state.productProperties.fold((l) {
+                    return SliverToBoxAdapter(
+                      child: Text(l),
+                    );
+                  }, (propertyList) {
+                    return ProductProperties(propertyList);
+                  })
+                },
                 ProductDescription(widget.product.description),
                 SliverToBoxAdapter(
                   child: Container(
@@ -301,6 +277,104 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class ProductProperties extends StatefulWidget {
+  List<Property> productPropertyList;
+  ProductProperties(
+    this.productPropertyList, {
+    super.key,
+  });
+
+  @override
+  State<ProductProperties> createState() => _ProductPropertiesState();
+}
+
+class _ProductPropertiesState extends State<ProductProperties> {
+  bool _isVisible = false;
+  @override
+  Widget build(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Column(
+        children: [
+          Container(
+            height: 46,
+            margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(width: 1, color: CustomColors.grey),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(15),
+              ),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: GestureDetector(
+                onTap: () => setState(() {
+                  _isVisible = !_isVisible;
+                }),
+                child: Row(
+                  children: [
+                    Image.asset('assets/images/icon_left_category.png'),
+                    const SizedBox(width: 10),
+                    const Text(
+                      'مشاهده',
+                      style: TextStyle(
+                          fontFamily: 'SB',
+                          fontSize: 12,
+                          color: CustomColors.blue),
+                    ),
+                    const Spacer(),
+                    const Text(
+                      ': مشخصات فنی',
+                      style: TextStyle(fontFamily: 'SM'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: _isVisible,
+            child: Container(
+              margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(width: 1, color: CustomColors.grey),
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(15),
+                ),
+              ),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: widget.productPropertyList.length,
+                itemBuilder: (context, index) {
+                  var property = widget.productPropertyList[index];
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          '${property.value!} : ${property.title!}',
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                              fontFamily: 'SM',
+                              fontSize: 14,
+                              height: 1.8,
+                              color: Colors.black),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

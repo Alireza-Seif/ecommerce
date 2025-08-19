@@ -3,6 +3,7 @@ import 'package:ecommerce/data/datasource/product_detail_datasource.dart';
 import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_variant.dart';
+import 'package:ecommerce/data/model/product_property_model.dart';
 import 'package:ecommerce/data/model/variant.dart';
 import 'package:ecommerce/data/model/variant_type_model.dart';
 import 'package:ecommerce/di/di.dart';
@@ -16,6 +17,7 @@ abstract class IProductDetailRepository {
   Future<Either<String, List<ProductVariant>>> getProductVariants(
       String productId);
   Future<Either<String, CategoryModel>> getProductCategory(String categoryId);
+  Future<Either<String, List<Property>>> getProductProperties(String productId);
 }
 
 class ProductDetailRepository extends IProductDetailRepository {
@@ -68,6 +70,17 @@ class ProductDetailRepository extends IProductDetailRepository {
       String categoryId) async {
     try {
       final response = await _datasource.getProductCategory(categoryId);
+      return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message ?? 'unknown error');
+    }
+  }
+
+  @override
+  Future<Either<String, List<Property>>> getProductProperties(
+      String productId) async {
+    try {
+      final response = await _datasource.getProductProperties(productId);
       return right(response);
     } on ApiException catch (ex) {
       return left(ex.message ?? 'unknown error');
