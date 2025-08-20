@@ -6,7 +6,7 @@ import 'package:ecommerce/data/model/banner_model.dart';
 import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/widgets/banner_slider.dart';
-import 'package:ecommerce/widgets/category_item_list.dart';
+import 'package:ecommerce/widgets/category_icon_item_list.dart';
 import 'package:ecommerce/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -257,7 +257,7 @@ class _getCategoryList extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: EdgeInsets.only(left: 20),
-              child: CategoryItemChip(categoryList[index]),
+              child: CategoryIconItemChip(categoryList[index]),
             );
           },
         ),
