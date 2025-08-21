@@ -143,7 +143,7 @@ class _MainAppState extends State<MainApp> {
         child: CategoryScreen(),
       ),
       const CardScreen(),
-      const ProfileScreen(),
+      const ProfileScreen(), 
     ];
   }
 }
