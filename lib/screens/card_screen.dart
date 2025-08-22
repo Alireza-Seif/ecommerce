@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/util/extensions/string_extensions.dart';
 import 'package:flutter/material.dart';
 
 class CardScreen extends StatelessWidget {
@@ -183,7 +184,7 @@ class CardItem extends StatelessWidget {
                             Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
-                                    color: CustomColors.grey, width: 1),
+                                    color: CustomColors.red, width: 1),
                                 borderRadius: const BorderRadius.all(
                                   Radius.circular(10),
                                 ),
@@ -198,11 +199,11 @@ class CardItem extends StatelessWidget {
                                       child: Text(
                                         'حذف',
                                         style: TextStyle(
-                                            fontFamily: 'SM', fontSize: 12),
+                                            fontFamily: 'SM', fontSize: 12,color: CustomColors.red),
                                       ),
                                     ),
                                     SizedBox(width: 4),
-                                    Image.asset('assets/images/icon_trash.png')
+                                    Image.asset('assets/images/icon_trash.png',color: CustomColors.red,)
                                   ],
                                 ),
                               ),
@@ -260,8 +261,7 @@ class OptionCheap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String cheapColor = 'ff$color';
-    int hexColor = int.parse(cheapColor, radix: 16);
+
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: CustomColors.grey, width: 1),
@@ -286,7 +286,7 @@ class OptionCheap extends StatelessWidget {
                 width: 12,
                 margin: EdgeInsets.only(right: 8),
                 decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: Color(hexColor)),
+                    shape: BoxShape.circle, color: color.toColor()),
               )
             },
           ],
