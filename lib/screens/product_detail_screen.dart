@@ -4,6 +4,7 @@ import 'package:ecommerce/bloc/product/product_bloc.dart';
 import 'package:ecommerce/bloc/product/product_event.dart';
 import 'package:ecommerce/bloc/product/product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/data/model/basket_item.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/data/model/product_property_model.dart';
@@ -14,6 +15,7 @@ import 'package:ecommerce/data/model/variant_type_model.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   ProductModel product;
@@ -261,14 +263,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ),
                   ),
                 ),
-                const SliverToBoxAdapter(
+                SliverToBoxAdapter(
                   child: Padding(
                     padding: EdgeInsets.only(top: 20, right: 30, left: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         PriceTagButton(),
-                        AddToBasketButton(),
+                        AddToBasketButton(widget.product),
                       ],
                     ),
                   ),
@@ -571,43 +573,58 @@ class _GalleryWidgetState extends State<GalleryWidget> {
 }
 
 class AddToBasketButton extends StatelessWidget {
-  const AddToBasketButton({super.key});
+  ProductModel product;
+  AddToBasketButton(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: AlignmentDirectional.bottomCenter,
-      children: [
-        Container(
-          height: 60,
-          width: 140,
-          decoration: const BoxDecoration(
-            color: CustomColors.blue,
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
-            ),
-          ),
-        ),
-        ClipRRect(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15),
-          ),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: const SizedBox(
-              height: 53,
-              width: 160,
-              child: Center(
-                child: Text(
-                  'افزودن سبد خرید',
-                  style: TextStyle(
-                      fontFamily: 'SB', fontSize: 16, color: Colors.white),
-                ),
+    return GestureDetector(
+      onTap: () {
+        var item = BasketItem(
+            product.id,
+            product.collectionId,
+            product.thumbnail,
+            product.discountPrice,
+            product.price,
+            product.name,
+            product.categoryId);
+        var box = Hive.openBox<BasketItem>('BasketItemBox');
+        box.then((box) => box.add(item));
+      },
+      child: Stack(
+        alignment: AlignmentDirectional.bottomCenter,
+        children: [
+          Container(
+            height: 60,
+            width: 140,
+            decoration: const BoxDecoration(
+              color: CustomColors.blue,
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
               ),
             ),
           ),
-        )
-      ],
+          ClipRRect(
+            borderRadius: const BorderRadius.all(
+              Radius.circular(15),
+            ),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: const SizedBox(
+                height: 53,
+                width: 160,
+                child: Center(
+                  child: Text(
+                    'افزودن سبد خرید',
+                    style: TextStyle(
+                        fontFamily: 'SB', fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

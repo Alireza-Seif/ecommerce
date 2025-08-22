@@ -90,7 +90,6 @@ class _categoryList extends StatelessWidget {
   List<CategoryModel>? list;
 
   _categoryList({
-    super.key,
     required this.list,
   });
 

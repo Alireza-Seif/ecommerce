@@ -6,8 +6,9 @@
 build/
 **/doc/api/
 **/ios/Flutter/.last_build_id
-
+ß
 # VS Code settings
+.vscode
 .vscode/
 .vscode/settings.json
 

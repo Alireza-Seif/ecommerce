@@ -1,15 +1,17 @@
-import 'dart:math';
-
 import 'package:dotted_line/dotted_line.dart';
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/data/model/basket_item.dart';
 import 'package:ecommerce/util/extensions/string_extensions.dart';
+import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class CardScreen extends StatelessWidget {
   const CardScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box<BasketItem>('basketItemBox');
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -55,9 +57,9 @@ class CardScreen extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
-                      return const CardItem();
+                      return CardItem(box.values.toList()[index]);
                     },
-                    childCount: 10,
+                    childCount: box.values.length,
                   ),
                 ),
                 const SliverPadding(
@@ -94,9 +96,8 @@ class CardScreen extends StatelessWidget {
 }
 
 class CardItem extends StatelessWidget {
-  const CardItem({
-    super.key,
-  });
+  BasketItem basketItem;
+  CardItem(this.basketItem, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +119,15 @@ class CardItem extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child: Image.asset('assets/images/iphone.png'),
+                  child: SizedBox(
+                    height: 104,
+                    width: 75,
+                    child: Center(
+                      child: CachedImage(
+                        imageUrl: basketItem.thumbnail,
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -127,8 +136,8 @@ class CardItem extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'اسم محصول',
+                        Text(
+                          basketItem.name,
                           style: TextStyle(fontFamily: 'SB', fontSize: 16),
                         ),
                         SizedBox(height: 6),
@@ -140,8 +149,8 @@ class CardItem extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            const Text(
-                              '49.324.234',
+                            Text(
+                              basketItem.realPrice.toString(),
                               style: TextStyle(fontFamily: 'SM', fontSize: 12),
                             ),
                             SizedBox(width: 4),
@@ -199,11 +208,16 @@ class CardItem extends StatelessWidget {
                                       child: Text(
                                         'حذف',
                                         style: TextStyle(
-                                            fontFamily: 'SM', fontSize: 12,color: CustomColors.red),
+                                            fontFamily: 'SM',
+                                            fontSize: 12,
+                                            color: CustomColors.red),
                                       ),
                                     ),
                                     SizedBox(width: 4),
-                                    Image.asset('assets/images/icon_trash.png',color: CustomColors.red,)
+                                    Image.asset(
+                                      'assets/images/icon_trash.png',
+                                      color: CustomColors.red,
+                                    )
                                   ],
                                 ),
                               ),
@@ -227,13 +241,13 @@ class CardItem extends StatelessWidget {
               dashGapColor: Colors.transparent,
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(vertical: 20),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '59.000.000',
+                  basketItem.price.toString(),
                   style: TextStyle(fontFamily: 'SB', fontSize: 16),
                 ),
                 SizedBox(width: 5),
@@ -261,7 +275,6 @@ class OptionCheap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       decoration: BoxDecoration(
         border: Border.all(color: CustomColors.grey, width: 1),

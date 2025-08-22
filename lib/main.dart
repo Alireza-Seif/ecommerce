@@ -3,17 +3,22 @@ import 'dart:ui';
 import 'package:ecommerce/bloc/category/category_bloc.dart';
 import 'package:ecommerce/bloc/home/home_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
+import 'package:ecommerce/data/model/basket_item.dart';
 import 'package:ecommerce/di/di.dart';
-import 'package:ecommerce/screens/card_screen.dart';
+import 'package:ecommerce/screens/card_screen.dart' hide CardItem;
 import 'package:ecommerce/screens/category_screen.dart';
 import 'package:ecommerce/screens/hom_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await getItInit();
+  await Hive.initFlutter();
+  Hive.registerAdapter(BasketItemAdapter());
+  await Hive.openBox<BasketItem>('basketItemBox');
   runApp(const MainApp());
 }
 
@@ -143,7 +148,7 @@ class _MainAppState extends State<MainApp> {
         child: CategoryScreen(),
       ),
       const CardScreen(),
-      const ProfileScreen(), 
+      const ProfileScreen(),
     ];
   }
 }
