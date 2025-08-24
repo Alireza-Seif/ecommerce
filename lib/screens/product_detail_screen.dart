@@ -18,7 +18,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  ProductModel product;
+  Product product;
   ProductDetailScreen(this.product, {super.key});
 
   @override
@@ -573,23 +573,17 @@ class _GalleryWidgetState extends State<GalleryWidget> {
 }
 
 class AddToBasketButton extends StatelessWidget {
-  ProductModel product;
+  Product product;
   AddToBasketButton(this.product, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        var item = BasketItem(
-            product.id,
-            product.collectionId,
-            product.thumbnail,
-            product.discountPrice,
-            product.price,
-            product.name,
-            product.categoryId);
-        var box = Hive.openBox<BasketItem>('BasketItemBox');
-        box.then((box) => box.add(item));
+
+        context.read<ProductBloc>().add(ProductAddToBasket(product));
+
+       
       },
       child: Stack(
         alignment: AlignmentDirectional.bottomCenter,

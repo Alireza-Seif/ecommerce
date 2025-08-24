@@ -12,9 +12,9 @@ class HomeInitState extends HomeState {}
 class HomeRequestSuccessState extends HomeState {
   Either<String, List<BannerModel>> bannerList;
   Either<String, List<CategoryModel>> categoryList;
-  Either<String, List<ProductModel>> productList;
-    Either<String, List<ProductModel>> hottestProductList;
-      Either<String, List<ProductModel>> bestSellerProductList;
+  Either<String, List<Product>> productList;
+    Either<String, List<Product>> hottestProductList;
+      Either<String, List<Product>> bestSellerProductList;
 
 
 

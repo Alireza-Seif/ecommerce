@@ -5,14 +5,14 @@ import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
 
 abstract class ICategoryProductRepository {
-  Future<Either<String, List<ProductModel>>> getProductsByCategoryId(
+  Future<Either<String, List<Product>>> getProductsByCategoryId(
       String categoryId);
 }
 
 class CategoryProductRepository extends ICategoryProductRepository {
   final ICategoryProductDataSource _dataSource = locator.get();
   @override
-  Future<Either<String, List<ProductModel>>> getProductsByCategoryId(
+  Future<Either<String, List<Product>>> getProductsByCategoryId(
       String categoryId) async {
         try{
           var response = await _dataSource.getProductsByCategoryId(categoryId);

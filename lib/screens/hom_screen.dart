@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class _getMostViewedProduct extends StatelessWidget {
-  final List<ProductModel> productList;
+  final List<Product> productList;
   const _getMostViewedProduct(
     this.productList, {
     super.key,
@@ -178,7 +178,7 @@ class _getMostViewedTitle extends StatelessWidget {
 }
 
 class _getBestSellerProducts extends StatelessWidget {
-  final List<ProductModel> productList;
+  final List<Product> productList;
   const _getBestSellerProducts(
     this.productList, {
     super.key,

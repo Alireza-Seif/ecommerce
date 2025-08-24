@@ -6,6 +6,6 @@ abstract class CategoryProductState {}
 class CategoryProductLoadingState extends CategoryProductState {}
 
 class CategoryProductResponseSuccessState extends CategoryProductState {
-  Either<String, List<ProductModel>> productListByCategory;
+  Either<String, List<Product>> productListByCategory;
   CategoryProductResponseSuccessState(this.productListByCategory);
 }

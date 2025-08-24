@@ -4,14 +4,14 @@ import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
 
 abstract class ICategoryProductDataSource {
-  Future<List<ProductModel>> getProductsByCategoryId(String categoryId);
+  Future<List<Product>> getProductsByCategoryId(String categoryId);
 }
 
 class CategoryProductRemoteDatasource extends ICategoryProductDataSource {
   final Dio _dio = locator.get();
 
   @override
-  Future<List<ProductModel>> getProductsByCategoryId(String categoryId) async {
+  Future<List<Product>> getProductsByCategoryId(String categoryId) async {
     try {
       Map<String, String> qParams = {'filter': 'category="$categoryId"'};
 
@@ -24,7 +24,7 @@ class CategoryProductRemoteDatasource extends ICategoryProductDataSource {
       }
 
       return response.data['items']
-          .map<ProductModel>((jsonObject) => ProductModel.fromJson(jsonObject))
+          .map<Product>((jsonObject) => Product.fromJson(jsonObject))
           .toList();
     } on DioException catch (ex) {
       throw ApiException(ex.response?.statusCode, ex.response?.data['message']);

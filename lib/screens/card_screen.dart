@@ -57,6 +57,7 @@ class CardScreen extends StatelessWidget {
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
+                      
                       return CardItem(box.values.toList()[index]);
                     },
                     childCount: box.values.length,

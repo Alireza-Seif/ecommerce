@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductItem extends StatelessWidget {
-  ProductModel productItem;
+  Product productItem;
   ProductItem(
     this.productItem, {
     super.key,
