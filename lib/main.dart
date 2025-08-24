@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:ecommerce/bloc/basket/basket_bloc.dart';
+import 'package:ecommerce/bloc/basket/basket_event.dart';
 import 'package:ecommerce/bloc/category/category_bloc.dart';
 import 'package:ecommerce/bloc/home/home_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
@@ -147,7 +149,14 @@ class _MainAppState extends State<MainApp> {
         create: (context) => CategoryBloc(),
         child: CategoryScreen(),
       ),
-      const CardScreen(),
+      BlocProvider(
+        create: (context) {
+          var bloc = BasketBloc();
+          bloc.add(BasketFetchFromHiveEvent());
+          return bloc;
+        },
+        child: CardScreen(),
+      ),
       const ProfileScreen(),
     ];
   }
