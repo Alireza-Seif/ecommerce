@@ -17,10 +17,11 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await getItInit();
   await Hive.initFlutter();
   Hive.registerAdapter(BasketItemAdapter());
   await Hive.openBox<BasketItem>('basketItemBox');
+  await getItInit();
+
   runApp(const MainApp());
 }
 
@@ -151,7 +152,7 @@ class _MainAppState extends State<MainApp> {
       ),
       BlocProvider(
         create: (context) {
-          var bloc = BasketBloc();
+          var bloc = locator.get<BasketBloc>();
           bloc.add(BasketFetchFromHiveEvent());
           return bloc;
         },

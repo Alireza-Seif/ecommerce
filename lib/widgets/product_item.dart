@@ -1,6 +1,8 @@
+import 'package:ecommerce/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce/bloc/product/product_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_model.dart';
+import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/screens/product_detail_screen.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +21,9 @@ class ProductItem extends StatelessWidget {
       onTap: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => BlocProvider(
-              create: (context) => ProductBloc(),
-              child: ProductDetailScreen(productItem),
+            builder: (context) => BlocProvider<BasketBloc>.value(
+              value: locator.get<BasketBloc>(),
+              child: ProductDetailScreen(productItem), 
             ),
           ),
         );
