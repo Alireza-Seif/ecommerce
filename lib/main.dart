@@ -18,8 +18,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  Hive.registerAdapter(BasketItemAdapter());
   await Hive.openBox<BasketItem>('basketItemBox');
+  Hive.registerAdapter(BasketItemAdapter());
   await getItInit();
 
   runApp(const MainApp());

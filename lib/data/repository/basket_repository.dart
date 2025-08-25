@@ -6,6 +6,7 @@ import 'package:ecommerce/di/di.dart';
 abstract class IBasketRepository {
   Future<Either<String, String>> addProductToBasket(BasketItem basketItem);
   Future<Either<String, List<BasketItem>>> getAllBasketItem();
+  Future<int> getBasketFinalPrice();
 }
 
 class BasketRepository extends IBasketRepository {
@@ -30,5 +31,10 @@ class BasketRepository extends IBasketRepository {
     } catch (ex) {
       return Left(ex.toString());
     }
+  }
+
+  @override
+  Future<int> getBasketFinalPrice() async {
+    return _datasource.getBasketFinalPrice();
   }
 }

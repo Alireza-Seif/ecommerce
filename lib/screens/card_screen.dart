@@ -84,28 +84,32 @@ class CardScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 44, vertical: 10),
-                  child: SizedBox(
-                    height: 53,
-                    width: MediaQuery.of(context).size.width,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: CustomColors.green,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                if (state is BasketDataFetchedState) ...{
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 44, vertical: 10),
+                    child: SizedBox(
+                      height: 53,
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: CustomColors.green,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
-                      ),
-                      onPressed: () {},
-                      child: const Text(
-                        'ادامه خرید',
-                        style: TextStyle(fontSize: 18, fontFamily: 'SM'),
+                        onPressed: () {},
+                        child: Text(
+                          (state.basketFinalPrice == 0)
+                              ? 'سبد خرید خالی است'
+                              : 'جمع قیمت : ${state.basketFinalPrice}',
+                          style: TextStyle(fontSize: 18, fontFamily: 'SM'),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                },
               ],
             );
           },
