@@ -6,7 +6,6 @@ import 'package:ecommerce/bloc/product/product_bloc.dart';
 import 'package:ecommerce/bloc/product/product_event.dart';
 import 'package:ecommerce/bloc/product/product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
-import 'package:ecommerce/data/model/basket_item.dart';
 import 'package:ecommerce/data/model/product_image_model.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/data/model/product_property_model.dart';
@@ -17,7 +16,6 @@ import 'package:ecommerce/data/model/variant_type_model.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   Product product;
@@ -28,8 +26,6 @@ class ProductDetailScreen extends StatefulWidget {
 }
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
-
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -829,7 +825,10 @@ class _VoltageVariantListState extends State<VoltageVariantList> {
                     ),
                     border: selectedIndex == index
                         ? Border.all(
-                            width: 1, color: CustomColors.blueIndicator)
+                            width: 1,
+                            color: CustomColors.blueIndicator,
+                            strokeAlign: BorderSide.strokeAlignOutside,
+                          )
                         : Border.all(width: 1, color: CustomColors.grey)),
                 child: Center(
                   child: Text(

@@ -8,9 +8,28 @@ import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:zarinpal/zarinpal.dart';
 
-class CardScreen extends StatelessWidget {
+class CardScreen extends StatefulWidget {
   const CardScreen({super.key});
+
+  @override
+  State<CardScreen> createState() => _CardScreenState();
+}
+
+class _CardScreenState extends State<CardScreen> {
+  PaymentRequest _paymentRequest = PaymentRequest();
+
+  @override
+  void initState() {
+    super.initState();
+    _paymentRequest.setIsSandBox(true);
+    _paymentRequest.setAmount(1000);
+    _paymentRequest.setDescription('this is test for ecommerce application');
+    _paymentRequest.setCallbackURL('expertflutter://shop');
+    _paymentRequest.setMerchantID('test');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +118,13 @@ class CardScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          ZarinPal().startPayment(_paymentRequest,(status, paymentGatewayUri, data) {
+                            if (status == 100) {
+                              launchUrl(Uri.parse(paymentGatewayUri!),mode: LaunchMode.externalApplication ); 
+                            }
+                          },);
+                        },
                         child: Text(
                           (state.basketFinalPrice == 0)
                               ? 'سبد خرید خالی است'
@@ -276,7 +301,7 @@ class CardItem extends StatelessWidget {
                 ),
                 SizedBox(width: 5),
                 Text(
-                  'تومن',
+                  'تومان',
                   style: TextStyle(fontFamily: 'SB', fontSize: 16),
                 ),
               ],

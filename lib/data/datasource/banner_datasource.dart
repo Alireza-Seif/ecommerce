@@ -8,7 +8,7 @@ abstract class IBannerDataSource {
 }
 
 class BannerRemoteDataSource extends IBannerDataSource {
-  Dio _dio = locator.get();
+  final Dio _dio = locator.get();
   @override
   Future<List<BannerModel>> getBanners() async {
     try {

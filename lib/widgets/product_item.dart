@@ -1,5 +1,4 @@
 import 'package:ecommerce/bloc/basket/basket_bloc.dart';
-import 'package:ecommerce/bloc/product/product_bloc.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/di/di.dart';

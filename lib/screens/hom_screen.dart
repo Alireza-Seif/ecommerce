@@ -119,9 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
 class _getMostViewedProduct extends StatelessWidget {
   final List<Product> productList;
   const _getMostViewedProduct(
-    this.productList, {
-    super.key,
-  });
+    this.productList);
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +144,7 @@ class _getMostViewedProduct extends StatelessWidget {
 }
 
 class _getMostViewedTitle extends StatelessWidget {
-  const _getMostViewedTitle({
-    super.key,
-  });
+  const _getMostViewedTitle();
 
   @override
   Widget build(BuildContext context) {
@@ -180,9 +176,7 @@ class _getMostViewedTitle extends StatelessWidget {
 class _getBestSellerProducts extends StatelessWidget {
   final List<Product> productList;
   const _getBestSellerProducts(
-    this.productList, {
-    super.key,
-  });
+    this.productList);
 
   @override
   Widget build(BuildContext context) {
@@ -207,9 +201,7 @@ class _getBestSellerProducts extends StatelessWidget {
 }
 
 class _getBestSellerTitle extends StatelessWidget {
-  const _getBestSellerTitle({
-    super.key,
-  });
+  const _getBestSellerTitle();
 
   @override
   Widget build(BuildContext context) {
@@ -240,9 +232,7 @@ class _getBestSellerTitle extends StatelessWidget {
 class _getCategoryList extends StatelessWidget {
   final List<CategoryModel> categoryList;
   const _getCategoryList(
-    this.categoryList, {
-    super.key,
-  });
+    this.categoryList);
 
   @override
   Widget build(BuildContext context) {
@@ -267,9 +257,7 @@ class _getCategoryList extends StatelessWidget {
 }
 
 class _getCategoryListTitle extends StatelessWidget {
-  const _getCategoryListTitle({
-    super.key,
-  });
+  const _getCategoryListTitle();
 
   @override
   Widget build(BuildContext context) {
@@ -294,9 +282,7 @@ class _getCategoryListTitle extends StatelessWidget {
 class _getBanners extends StatelessWidget {
   List<BannerModel> banners;
   _getBanners(
-    this.banners, {
-    super.key,
-  });
+    this.banners);
 
   @override
   Widget build(BuildContext context) {
@@ -309,9 +295,7 @@ class _getBanners extends StatelessWidget {
 }
 
 class _getSearchBox extends StatelessWidget {
-  const _getSearchBox({
-    super.key,
-  });
+  const _getSearchBox();
 
   @override
   Widget build(BuildContext context) {
