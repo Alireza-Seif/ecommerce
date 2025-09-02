@@ -1,3 +1,4 @@
+import 'package:app_links/app_links.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:ecommerce/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce/bloc/basket/basket_state.dart';
@@ -29,6 +30,26 @@ class _CardScreenState extends State<CardScreen> {
     _paymentRequest.setDescription('this is test for ecommerce application');
     _paymentRequest.setCallbackURL('expertflutter://shop');
     _paymentRequest.setMerchantID('test');
+
+    AppLinks().stringLinkStream.listen((deeplink) {
+      if (deeplink.toLowerCase().contains('authority')) {
+        String? _authority = deeplink.extractValueFromQuery('Authority');
+        String? _status = deeplink.extractValueFromQuery('Status');
+        // verifyPaymentRequest();
+        ZarinPal().verificationPayment(
+          _status!,
+          _authority!,
+          _paymentRequest,
+          (isPaymentSuccess, refID, paymentRequest, data) {
+            if (isPaymentSuccess) {
+              print(refID);
+            } else {
+              print('error ');
+            }
+          },
+        );
+      }
+    });
   }
 
   @override
@@ -119,11 +140,15 @@ class _CardScreenState extends State<CardScreen> {
                           ),
                         ),
                         onPressed: () {
-                          ZarinPal().startPayment(_paymentRequest,(status, paymentGatewayUri, data) {
-                            if (status == 100) {
-                              launchUrl(Uri.parse(paymentGatewayUri!),mode: LaunchMode.externalApplication ); 
-                            }
-                          },);
+                          ZarinPal().startPayment(
+                            _paymentRequest,
+                            (status, paymentGatewayUri, data) {
+                              if (status == 100) {
+                                launchUrl(Uri.parse(paymentGatewayUri!),
+                                    mode: LaunchMode.externalApplication);
+                              }
+                            },
+                          );
                         },
                         child: Text(
                           (state.basketFinalPrice == 0)
