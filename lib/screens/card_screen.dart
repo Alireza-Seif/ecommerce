@@ -1,6 +1,6 @@
-import 'package:app_links/app_links.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:ecommerce/bloc/basket/basket_bloc.dart';
+import 'package:ecommerce/bloc/basket/basket_event.dart';
 import 'package:ecommerce/bloc/basket/basket_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/basket_item.dart';
@@ -8,53 +8,12 @@ import 'package:ecommerce/util/extensions/string_extensions.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:zarinpal/zarinpal.dart';
 
-class CardScreen extends StatefulWidget {
+class CardScreen extends StatelessWidget {
   const CardScreen({super.key});
 
   @override
-  State<CardScreen> createState() => _CardScreenState();
-}
-
-class _CardScreenState extends State<CardScreen> {
-  PaymentRequest _paymentRequest = PaymentRequest();
-
-  @override
-  void initState() {
-    super.initState();
-    _paymentRequest.setIsSandBox(true);
-    _paymentRequest.setAmount(1000);
-    _paymentRequest.setDescription('this is test for ecommerce application');
-    _paymentRequest.setCallbackURL('expertflutter://shop');
-    _paymentRequest.setMerchantID('test');
-
-    AppLinks().stringLinkStream.listen((deeplink) {
-      if (deeplink.toLowerCase().contains('authority')) {
-        String? _authority = deeplink.extractValueFromQuery('Authority');
-        String? _status = deeplink.extractValueFromQuery('Status');
-        // verifyPaymentRequest();
-        ZarinPal().verificationPayment(
-          _status!,
-          _authority!,
-          _paymentRequest,
-          (isPaymentSuccess, refID, paymentRequest, data) {
-            if (isPaymentSuccess) {
-              print(refID);
-            } else {
-              print('error ');
-            }
-          },
-        );
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    var box = Hive.box<BasketItem>('basketItemBox');
     return Scaffold(
       backgroundColor: CustomColors.backgroundScreenColor,
       body: SafeArea(
@@ -140,15 +99,12 @@ class _CardScreenState extends State<CardScreen> {
                           ),
                         ),
                         onPressed: () {
-                          ZarinPal().startPayment(
-                            _paymentRequest,
-                            (status, paymentGatewayUri, data) {
-                              if (status == 100) {
-                                launchUrl(Uri.parse(paymentGatewayUri!),
-                                    mode: LaunchMode.externalApplication);
-                              }
-                            },
-                          );
+                          context
+                              .read<BasketBloc>()
+                              .add(BasketPaymentInitEvent());
+                          context
+                              .read<BasketBloc>()
+                              .add(BasketPaymentRequestEvent());
                         },
                         child: Text(
                           (state.basketFinalPrice == 0)
