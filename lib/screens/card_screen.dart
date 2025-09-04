@@ -126,7 +126,7 @@ class CardScreen extends StatelessWidget {
 }
 
 class CardItem extends StatelessWidget {
-  BasketItem basketItem;
+  final BasketItem basketItem;
   CardItem(this.basketItem, {super.key});
 
   @override
