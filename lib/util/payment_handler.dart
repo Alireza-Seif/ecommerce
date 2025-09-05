@@ -1,5 +1,6 @@
 import 'package:app_links/app_links.dart';
 import 'package:ecommerce/util/extensions/string_extensions.dart';
+import 'package:ecommerce/util/url_handler.dart';
 import 'package:zarinpal/zarinpal.dart';
 
 abstract class PaymentHandler {
@@ -10,6 +11,10 @@ abstract class PaymentHandler {
 
 class ZarinpalPaymentHandler extends PaymentHandler {
   final PaymentRequest _paymentRequest = PaymentRequest();
+  UrlHandler urlHandler = UrlLauncher();
+
+  String? _authority;
+  String? _status;
 
   @override
   Future<void> initPaymentRequest() async {
@@ -18,6 +23,17 @@ class ZarinpalPaymentHandler extends PaymentHandler {
     _paymentRequest.setDescription('this is test for ecommerce application');
     _paymentRequest.setCallbackURL('expertflutter://shop');
     _paymentRequest.setMerchantID('test');
+
+    AppLinks().stringLinkStream.listen(
+      (deeplink) {
+        if (deeplink.toLowerCase().contains('authority')) {
+          _authority = deeplink.extractValueFromQuery('Authority');
+          _status = deeplink.extractValueFromQuery('Status');
+
+          verifyPaymentRequest();
+        }
+      },
+    );
   }
 
   @override
@@ -26,7 +42,7 @@ class ZarinpalPaymentHandler extends PaymentHandler {
       _paymentRequest,
       (status, paymentGatewayUri, data) {
         if (status == 100) {
-          // launchUrl(Uri.parse(paymentGatewayUri!)
+          urlHandler.openUrl(paymentGatewayUri!);
         }
       },
     );
@@ -34,46 +50,22 @@ class ZarinpalPaymentHandler extends PaymentHandler {
 
   @override
   Future<void> verifyPaymentRequest() async {
-    AppLinks().stringLinkStream.listen(
-      (deeplink) {
-        if (deeplink.toLowerCase().contains('authority')) {
-          String? authority = deeplink.extractValueFromQuery('Authority');
-          String? status = deeplink.extractValueFromQuery('Status'); 
-          // verifyPaymentRequest();
-          ZarinPal().verificationPayment(
-            status!,
-            authority!,
-            _paymentRequest,
-            (isPaymentSuccess, refID, paymentRequest, data) {
-              if (isPaymentSuccess) {
-                print(refID);
-              } else {
-                print('error');
-              }
-            },
-          );
+    if (_status == null || _authority == null) {
+      print('No payment data found for verification');
+      return;
+    }
+
+    ZarinPal().verificationPayment(
+      _status!,
+      _authority!,
+      _paymentRequest,
+      (isPaymentSuccess, refID, paymentRequest, data) {
+        if (isPaymentSuccess) {
+          print('Payment successful, refID: $refID');
+        } else {
+          print('Payment failed');
         }
       },
     );
-  }
-}
-
-class PaypalPaymentHandler extends PaymentHandler{
-  @override
-  Future<void> initPaymentRequest() {
-    // TODO: implement initPaymentRequest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> sendPaymentRequest() {
-    // TODO: implement sendPaymentRequest
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> verifyPaymentRequest() {
-    // TODO: implement verifyPaymentRequest
-    throw UnimplementedError();
   }
 }
