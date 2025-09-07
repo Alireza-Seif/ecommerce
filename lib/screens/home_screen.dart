@@ -10,6 +10,7 @@ import 'package:ecommerce/widgets/category_icon_item_list.dart';
 import 'package:ecommerce/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
@@ -36,80 +37,87 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            return CustomScrollView(slivers: [
-              if (state is HomeLoadingState) ...{
-                SliverToBoxAdapter(
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 24,
-                          height: 24,
-                          child: CircularProgressIndicator(
-                            color: CustomColors.blue,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              } else ...{
-                _getSearchBox(),
-                if (state is HomeRequestSuccessState) ...[
-                  state.bannerList.fold(
-                    (exceptionMessages) {
-                      return SliverToBoxAdapter(
-                        child: Text(exceptionMessages),
-                      );
-                    },
-                    (listBanner) {
-                      return _getBanners(listBanner);
-                    },
-                  )
-                ],
-                _getCategoryListTitle(),
-                if (state is HomeRequestSuccessState) ...[
-                  state.categoryList.fold(
-                    (exceptionMessages) {
-                      return SliverToBoxAdapter(
-                        child: Text(exceptionMessages),
-                      );
-                    },
-                    (categoryList) {
-                      return _getCategoryList(categoryList);
-                    },
-                  )
-                ],
-                _getBestSellerTitle(),
-                if (state is HomeRequestSuccessState) ...[
-                  state.bestSellerProductList.fold(
-                    (exceptionMessages) {
-                      return SliverToBoxAdapter(
-                        child: Text(exceptionMessages),
-                      );
-                    },
-                    (productList) {
-                      return _getBestSellerProducts(productList);
-                    },
-                  )
-                ],
-                _getMostViewedTitle(),
-                if (state is HomeRequestSuccessState) ...[
-                  state.hottestProductList.fold(
-                    (exceptionMessages) {
-                      return SliverToBoxAdapter(
-                        child: Text(exceptionMessages),
-                      );
-                    },
-                    (productList) {
-                      return _getMostViewedProduct(productList);
-                    },
-                  )
-                ],
-              },
-            ]);
+            return _getHomeScreenContent(state);
           },
+        ),
+      ),
+    );
+  }
+}
+
+Widget _getHomeScreenContent(HomeState state) {
+  if (state is HomeLoadingState) {
+    return LoadingAnimation();
+  } else if (state is HomeRequestSuccessState) {
+    return CustomScrollView(
+      slivers: [
+        _getSearchBox(),
+        state.bannerList.fold(
+          (exceptionMessages) {
+            return SliverToBoxAdapter(
+              child: Text(exceptionMessages),
+            );
+          },
+          (listBanner) {
+            return _getBanners(listBanner);
+          },
+        ),
+        _getCategoryListTitle(),
+        state.categoryList.fold(
+          (exceptionMessages) {
+            return SliverToBoxAdapter(
+              child: Text(exceptionMessages),
+            );
+          },
+          (categoryList) {
+            return _getCategoryList(categoryList);
+          },
+        ),
+        _getBestSellerTitle(),
+        state.bestSellerProductList.fold(
+          (exceptionMessages) {
+            return SliverToBoxAdapter(
+              child: Text(exceptionMessages),
+            );
+          },
+          (productList) {
+            return _getBestSellerProducts(productList);
+          },
+        ),
+        _getMostViewedTitle(),
+        state.hottestProductList.fold(
+          (exceptionMessages) {
+            return SliverToBoxAdapter(
+              child: Text(exceptionMessages),
+            );
+          },
+          (productList) {
+            return _getMostViewedProduct(productList);
+          },
+        ),
+      ],
+    );
+  } else {
+    return Center(
+      child: Text('خطایی در دریافت اطلاعات به وجود آمده! '),
+    );
+  }
+}
+
+class LoadingAnimation extends StatelessWidget {
+  const LoadingAnimation({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 60,
+        width: 60,
+        child: LoadingIndicator(
+          indicatorType: Indicator.ballRotateChase,
+          colors: [CustomColors.blueIndicator],
         ),
       ),
     );
@@ -118,8 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 class _getMostViewedProduct extends StatelessWidget {
   final List<Product> productList;
-  const _getMostViewedProduct(
-    this.productList);
+  const _getMostViewedProduct(this.productList);
 
   @override
   Widget build(BuildContext context) {
@@ -175,8 +182,7 @@ class _getMostViewedTitle extends StatelessWidget {
 
 class _getBestSellerProducts extends StatelessWidget {
   final List<Product> productList;
-  const _getBestSellerProducts(
-    this.productList);
+  const _getBestSellerProducts(this.productList);
 
   @override
   Widget build(BuildContext context) {
@@ -231,8 +237,7 @@ class _getBestSellerTitle extends StatelessWidget {
 
 class _getCategoryList extends StatelessWidget {
   final List<CategoryModel> categoryList;
-  const _getCategoryList(
-    this.categoryList);
+  const _getCategoryList(this.categoryList);
 
   @override
   Widget build(BuildContext context) {
@@ -281,8 +286,7 @@ class _getCategoryListTitle extends StatelessWidget {
 
 class _getBanners extends StatelessWidget {
   List<BannerModel> banners;
-  _getBanners(
-    this.banners);
+  _getBanners(this.banners);
 
   @override
   Widget build(BuildContext context) {
