@@ -22,11 +22,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 var locator = GetIt.instance;
 
 Future<void> getItInit() async {
-//util
-  _initUnits();
-
 //components
- await  _initComponents();
+  await _initComponents();
 
 //datasources
   _initDataSources();
@@ -39,16 +36,14 @@ Future<void> getItInit() async {
       .registerSingleton<BasketBloc>(BasketBloc(locator.get(), locator.get()));
 }
 
-//util
-void _initUnits() {
-  locator.registerSingleton<PaymentHandler>(
-      ZarinpalPaymentHandler(locator.get(), locator.get()));
-  locator.registerSingleton<BasketRepository>(BasketRepository());
-  locator.registerSingleton<UrlHandler>(UrlLauncher());
-}
-
 //components
 Future<void> _initComponents() async {
+  //util
+  locator.registerSingleton<UrlHandler>(UrlLauncher());
+  locator.registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(
+      locator.get()));
+
+  //components
   locator.registerSingleton<Dio>(
       Dio(BaseOptions(baseUrl: 'https://startflutter.ir/api/')));
 

@@ -9,7 +9,7 @@ import 'package:ecommerce/data/model/basket_item.dart';
 import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/screens/card_screen.dart' hide CardItem;
 import 'package:ecommerce/screens/category_screen.dart';
-import 'package:ecommerce/screens/hom_screen.dart';
+import 'package:ecommerce/screens/home_screen.dart';
 import 'package:ecommerce/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

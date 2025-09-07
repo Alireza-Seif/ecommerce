@@ -10,10 +10,12 @@ abstract class PaymentHandler {
 }
 
 class ZarinpalPaymentHandler extends PaymentHandler {
-  final PaymentRequest _paymentRequest;
+  final PaymentRequest _paymentRequest = PaymentRequest();
   UrlHandler urlHandler;
 
-  ZarinpalPaymentHandler(this.urlHandler, this._paymentRequest);
+  ZarinpalPaymentHandler(
+    this.urlHandler,
+  );
 
   String? _authority;
   String? _status;
