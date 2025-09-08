@@ -12,23 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
   });
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    BlocProvider.of<HomeBloc>(context).add(HomeGetInitializeEvent());
-    // BlocProvider.of<HomeBloc>(context).add(HomeGetBestSellerEvent());
-    // BlocProvider.of<HomeBloc>(context).add(Home());
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
-            return _getHomeScreenContent(state);
+            return _getHomeScreenContent(state, context);
           },
         ),
       ),
@@ -45,57 +32,63 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-Widget _getHomeScreenContent(HomeState state) {
+Widget _getHomeScreenContent(HomeState state, BuildContext context) {
   if (state is HomeLoadingState) {
     return LoadingAnimation();
   } else if (state is HomeRequestSuccessState) {
-    return CustomScrollView(
-      slivers: [
-        _getSearchBox(),
-        state.bannerList.fold(
-          (exceptionMessages) {
-            return SliverToBoxAdapter(
-              child: Text(exceptionMessages),
-            );
-          },
-          (listBanner) {
-            return _getBanners(listBanner);
-          },
-        ),
-        _getCategoryListTitle(),
-        state.categoryList.fold(
-          (exceptionMessages) {
-            return SliverToBoxAdapter(
-              child: Text(exceptionMessages),
-            );
-          },
-          (categoryList) {
-            return _getCategoryList(categoryList);
-          },
-        ),
-        _getBestSellerTitle(),
-        state.bestSellerProductList.fold(
-          (exceptionMessages) {
-            return SliverToBoxAdapter(
-              child: Text(exceptionMessages),
-            );
-          },
-          (productList) {
-            return _getBestSellerProducts(productList);
-          },
-        ),
-        _getMostViewedTitle(),
-        state.hottestProductList.fold(
-          (exceptionMessages) {
-            return SliverToBoxAdapter(
-              child: Text(exceptionMessages),
-            );
-          },
-          (productList) {
-            return _getMostViewedProduct(productList);
-          },
-        ),
-      ],
+    return RefreshIndicator(
+      onRefresh: () async {
+        BlocProvider.of<HomeBloc>(context).add(HomeGetInitializeEvent());
+      },
+      
+      child: CustomScrollView(
+        slivers: [
+          _getSearchBox(),
+          state.bannerList.fold(
+            (exceptionMessages) {
+              return SliverToBoxAdapter(
+                child: Text(exceptionMessages),
+              );
+            },
+            (listBanner) {
+              return _getBanners(listBanner);
+            },
+          ),
+          _getCategoryListTitle(),
+          state.categoryList.fold(
+            (exceptionMessages) {
+              return SliverToBoxAdapter(
+                child: Text(exceptionMessages),
+              );
+            },
+            (categoryList) {
+              return _getCategoryList(categoryList);
+            },
+          ),
+          _getBestSellerTitle(),
+          state.bestSellerProductList.fold(
+            (exceptionMessages) {
+              return SliverToBoxAdapter(
+                child: Text(exceptionMessages),
+              );
+            },
+            (productList) {
+              return _getBestSellerProducts(productList);
+            },
+          ),
+          _getMostViewedTitle(),
+          state.hottestProductList.fold(
+            (exceptionMessages) {
+              return SliverToBoxAdapter(
+                child: Text(exceptionMessages),
+              );
+            },
+            (productList) {
+              return _getMostViewedProduct(productList);
+            },
+          ),
+        ],
+      ),
     );
   } else {
     return Center(

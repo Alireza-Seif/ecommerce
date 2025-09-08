@@ -4,6 +4,7 @@ import 'package:ecommerce/bloc/basket/basket_bloc.dart';
 import 'package:ecommerce/bloc/basket/basket_event.dart';
 import 'package:ecommerce/bloc/category/category_bloc.dart';
 import 'package:ecommerce/bloc/home/home_bloc.dart';
+import 'package:ecommerce/bloc/home/home_event.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/basket_item.dart';
 import 'package:ecommerce/di/di.dart';
@@ -143,7 +144,11 @@ class _MainAppState extends State<MainApp> {
   List<Widget> getScreens() {
     return <Widget>[
       BlocProvider(
-        create: (context) => HomeBloc(),
+        create: (context) {
+          var bloc = HomeBloc();
+          bloc.add(HomeGetInitializeEvent());
+          return bloc;
+        },
         child: HomeScreen(),
       ),
       BlocProvider(
