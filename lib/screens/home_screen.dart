@@ -7,6 +7,7 @@ import 'package:ecommerce/data/model/category_model.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/widgets/banner_slider.dart';
 import 'package:ecommerce/widgets/category_icon_item_list.dart';
+import 'package:ecommerce/widgets/loading_animation.dart';
 import 'package:ecommerce/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,7 +41,7 @@ Widget _getHomeScreenContent(HomeState state, BuildContext context) {
       onRefresh: () async {
         BlocProvider.of<HomeBloc>(context).add(HomeGetInitializeEvent());
       },
-      
+
       child: CustomScrollView(
         slivers: [
           _getSearchBox(),
@@ -97,25 +98,6 @@ Widget _getHomeScreenContent(HomeState state, BuildContext context) {
   }
 }
 
-class LoadingAnimation extends StatelessWidget {
-  const LoadingAnimation({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        height: 60,
-        width: 60,
-        child: LoadingIndicator(
-          indicatorType: Indicator.ballRotateChase,
-          colors: [CustomColors.blueIndicator],
-        ),
-      ),
-    );
-  }
-}
 
 class _getMostViewedProduct extends StatelessWidget {
   final List<Product> productList;

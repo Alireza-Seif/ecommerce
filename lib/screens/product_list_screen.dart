@@ -3,6 +3,7 @@ import 'package:ecommerce/bloc/categoryProduct/category_product_event.dart';
 import 'package:ecommerce/bloc/categoryProduct/category_product_state.dart';
 import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/category_model.dart';
+import 'package:ecommerce/widgets/loading_animation.dart';
 import 'package:ecommerce/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,13 +70,7 @@ class _ProductListScreenState extends State<ProductListScreen> {
                   ),
                   if (state is CategoryProductLoadingState) ...{
                     SliverToBoxAdapter(
-                      child: Center(
-                        child: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
+                      child: LoadingAnimation(),
                     ),
                   },
                   if (state is CategoryProductResponseSuccessState) ...{

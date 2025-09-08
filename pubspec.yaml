@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   app_links: ^6.4.1
-  bloc: ^8.1.4
+  bloc: ^9.0.0
   cached_network_image: ^3.4.1
   dartz: ^0.10.1
   dio: ^5.5.0+1
@@ -16,10 +16,11 @@ dependencies:
   equatable: ^2.0.5
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.1.6
+  flutter_bloc: ^9.1.1
   get_it: ^8.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  intl: ^0.20.2
   loading_indicator: ^3.1.1
   shared_preferences: ^2.3.2
   smooth_page_indicator: ^1.1.0
@@ -29,7 +30,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
   build_runner: ^2.4.13
   hive_generator: ^2.0.1
 

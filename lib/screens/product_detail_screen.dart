@@ -14,6 +14,7 @@ import 'package:ecommerce/data/model/variant.dart';
 import 'package:ecommerce/data/model/variant_type_model.dart';
 
 import 'package:ecommerce/widgets/cached_image.dart';
+import 'package:ecommerce/widgets/loading_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,12 +60,7 @@ class DetailContentWidget extends StatelessWidget {
               slivers: [
                 if (state is ProductDetailLoadingState) ...{
                   SliverToBoxAdapter(
-                    child: Center(
-                      child: SizedBox(
-                          height: 24,
-                          width: 24,
-                          child: CircularProgressIndicator()),
-                    ),
+                    child: LoadingAnimation(),
                   )
                 },
                 if (state is ProductDetailResponseState) ...{
