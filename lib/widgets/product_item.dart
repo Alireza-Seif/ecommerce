@@ -3,9 +3,11 @@ import 'package:ecommerce/constants/colors.dart';
 import 'package:ecommerce/data/model/product_model.dart';
 import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/screens/product_detail_screen.dart';
+import 'package:ecommerce/util/extensions/int_extensions.dart';
 import 'package:ecommerce/widgets/cached_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class ProductItem extends StatelessWidget {
   Product productItem;
@@ -22,14 +24,14 @@ class ProductItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => BlocProvider<BasketBloc>.value(
               value: locator.get<BasketBloc>(),
-              child: ProductDetailScreen(productItem), 
+              child: ProductDetailScreen(productItem),
             ),
           ),
         );
       },
       child: Container(
         height: 216,
-        width: 160,
+        width: 170,
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(
@@ -146,10 +148,10 @@ class ProductItem extends StatelessWidget {
                     const SizedBox(width: 10),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text(
-                          productItem.price.toString(),
+                          productItem.price.convertToPrice(),
                           style: TextStyle(
                             fontFamily: 'SM',
                             fontSize: 12,
@@ -158,7 +160,7 @@ class ProductItem extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          productItem.realPrice.toString(),
+                          productItem.realPrice.convertToPrice(),
                           style: TextStyle(
                             fontFamily: 'SM',
                             fontSize: 16,
