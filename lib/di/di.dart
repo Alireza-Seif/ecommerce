@@ -5,6 +5,7 @@ import 'package:ecommerce/data/datasource/banner_datasource.dart';
 import 'package:ecommerce/data/datasource/basket_datasource.dart';
 import 'package:ecommerce/data/datasource/category_datasource.dart';
 import 'package:ecommerce/data/datasource/category_product_datasource.dart';
+import 'package:ecommerce/data/datasource/comment_datasource.dart';
 import 'package:ecommerce/data/datasource/product_datasource.dart';
 import 'package:ecommerce/data/datasource/product_detail_datasource.dart';
 import 'package:ecommerce/data/repository/authentication_repository.dart';
@@ -12,6 +13,7 @@ import 'package:ecommerce/data/repository/banner_repository.dart';
 import 'package:ecommerce/data/repository/basket_repository.dart';
 import 'package:ecommerce/data/repository/category_product_repository.dart';
 import 'package:ecommerce/data/repository/category_repository.dart';
+import 'package:ecommerce/data/repository/comment_repository.dart';
 import 'package:ecommerce/data/repository/product_detail_repository.dart';
 import 'package:ecommerce/data/repository/product_repository.dart';
 import 'package:ecommerce/util/payment_handler.dart';
@@ -40,8 +42,8 @@ Future<void> getItInit() async {
 Future<void> _initComponents() async {
   //util
   locator.registerSingleton<UrlHandler>(UrlLauncher());
-  locator.registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(
-      locator.get()));
+  locator
+      .registerSingleton<PaymentHandler>(ZarinpalPaymentHandler(locator.get()));
 
   //components
   locator.registerSingleton<Dio>(
@@ -70,6 +72,8 @@ void _initDataSources() {
       () => CategoryProductRemoteDatasource());
 
   locator.registerFactory<IBasketDatasource>(() => BasketLocDatasource());
+
+  locator.registerFactory<ICommentDatasource>(() => CommentRemoteDatasource());
 }
 
 //repositories
@@ -89,4 +93,6 @@ void _initRepositories() {
       () => CategoryProductRepository());
 
   locator.registerFactory<IBasketRepository>(() => BasketRepository());
+
+  locator.registerFactory<ICommentRepository>(() => CommentRepository());
 }
