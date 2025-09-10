@@ -4,12 +4,12 @@ import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
 
 abstract class ICommentDatasource {
-  Future<List<Comment>>? getComments(String productId);
+  Future<List<Comment>> getComments(String productId);
 }
 
 class CommentRemoteDatasource extends ICommentDatasource {
   @override
-  Future<List<Comment>>? getComments(String productId) async {
+  Future<List<Comment>> getComments(String productId) async {
     final Dio dio = locator.get();
     Map<String, String> qParams = {'filter': 'product_id=$productId'};
     try {

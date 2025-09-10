@@ -5,14 +5,14 @@ import 'package:ecommerce/di/di.dart';
 import 'package:ecommerce/util/api_exception.dart';
 
 abstract class ICommentRepository {
-  Future<Either<String, List<Comment>?>> getComments(String productId);
+  Future<Either<String, List<Comment>>> getComments(String productId);
 }
 
 class CommentRepository extends ICommentRepository {
   final ICommentDatasource _datasource = locator.get();
 
   @override
-  Future<Either<String, List<Comment>?>> getComments(String productId) async {
+  Future<Either<String, List<Comment>>> getComments(String productId) async {
     try {
       final response = await _datasource.getComments(productId);
       return right(response);
