@@ -354,14 +354,49 @@ class CommentBottomSheet extends StatelessWidget {
                 (commentList) {
                   if (commentList.isEmpty) {
                     return SliverToBoxAdapter(
-                      child: Center(child: Text('نظری برای این محصول ثبت نشده است')),
+                      child: Center(
+                          child: Text('نظری برای این محصول ثبت نشده است')),
                     );
                   }
                   return SliverList(
                     delegate: SliverChildBuilderDelegate(
                       childCount: commentList.length,
                       (context, index) {
-                        return Text(commentList[index].text.toString());
+                        return Container(
+                          padding: EdgeInsetsGeometry.all(16),
+                          margin: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      commentList[index].userName,style: TextStyle(fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.end,
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      commentList[index].text,
+                                      textAlign: TextAlign.end,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: CachedImage(
+                                      imageUrl:
+                                          commentList[index].userThumbnailUrl))
+                            ],
+                          ),
+                        );
                       },
                     ),
                   );
@@ -435,6 +470,7 @@ class _ProductPropertiesState extends State<ProductProperties> {
             child: Container(
               margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
               padding: EdgeInsets.all(12),
+    
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(width: 1, color: CustomColors.grey),
@@ -470,7 +506,6 @@ class _ProductPropertiesState extends State<ProductProperties> {
         ],
       ),
     );
-    
   }
 }
 
