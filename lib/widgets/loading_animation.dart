@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class LoadingAnimation extends StatelessWidget {
-  const LoadingAnimation({
+  Color? loadingColor;
+  LoadingAnimation({
+    this.loadingColor = CustomColors.blueIndicator,
     super.key,
   });
 
@@ -15,7 +17,7 @@ class LoadingAnimation extends StatelessWidget {
         width: 60,
         child: LoadingIndicator(
           indicatorType: Indicator.ballRotateChase,
-          colors: [CustomColors.blueIndicator],
+          colors: [loadingColor!],
         ),
       ),
     );

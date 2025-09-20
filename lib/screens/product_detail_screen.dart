@@ -349,7 +349,15 @@ class CommentBottomSheet extends StatelessWidget {
             if (state is CommentResponse) ...{
               state.response.fold(
                 (l) {
-                  return SliverToBoxAdapter(child: Text(l.toString()));
+                  return SliverToBoxAdapter(
+                      child: Center(
+                          child: Column(
+                    children: [
+                      LoadingAnimation(loadingColor: CustomColors.red),
+                      SizedBox(height: 10),
+                      Text('خطایی در نمایش نظرات به وجود آمده',style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
+                    ],
+                  )));
                 },
                 (commentList) {
                   if (commentList.isEmpty) {
@@ -364,7 +372,8 @@ class CommentBottomSheet extends StatelessWidget {
                       (context, index) {
                         return Container(
                           padding: EdgeInsetsGeometry.all(16),
-                          margin: EdgeInsets.symmetric(vertical: 8,horizontal: 16),
+                          margin:
+                              EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                           ),
@@ -376,7 +385,11 @@ class CommentBottomSheet extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      commentList[index].userName,style: TextStyle(fontWeight: FontWeight.bold),
+                                      (commentList[index].userName.isEmpty)
+                                          ? 'کاربر'
+                                          : commentList[index].userName,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
                                       textAlign: TextAlign.end,
                                     ),
                                     SizedBox(height: 8),
@@ -391,9 +404,12 @@ class CommentBottomSheet extends StatelessWidget {
                               SizedBox(
                                   height: 40,
                                   width: 40,
-                                  child: CachedImage(
-                                      imageUrl:
-                                          commentList[index].userThumbnailUrl))
+                                  child: (commentList[index].avatar.isNotEmpty)
+                                      ? CachedImage(
+                                          imageUrl: commentList[index]
+                                              .userThumbnailUrl)
+                                      : Image.asset(
+                                          'assets/images/avatar.png')),
                             ],
                           ),
                         );
@@ -470,7 +486,6 @@ class _ProductPropertiesState extends State<ProductProperties> {
             child: Container(
               margin: const EdgeInsets.only(top: 24, left: 44, right: 44),
               padding: EdgeInsets.all(12),
-    
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(width: 1, color: CustomColors.grey),

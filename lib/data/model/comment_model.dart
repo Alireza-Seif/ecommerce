@@ -5,9 +5,10 @@ class Comment {
   String userId;
   String userThumbnailUrl;
   String userName;
+  String avatar;
 
   Comment(this.id, this.text, this.productId, this.userId,
-      this.userThumbnailUrl, this.userName);
+      this.userThumbnailUrl, this.userName,this.avatar);
 
   factory Comment.fromJason(Map<String, dynamic> jsonObject) {
     return Comment(
@@ -16,7 +17,7 @@ class Comment {
       jsonObject['product_id'],
       jsonObject['user_id'],
       'http://startflutter.ir/api/files/${jsonObject['expand']['user-id']['collectionName']}/${jsonObject['expand']['user-id']['id']}/${jsonObject['expand']['user-id']['avatar']}',
-      jsonObject['expand']['user-id']['name'],
+      jsonObject['expand']['user-id']['name'],jsonObject['expand']['user-id']['avatar'],
     );
   }
 }
