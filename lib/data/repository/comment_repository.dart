@@ -6,6 +6,7 @@ import 'package:ecommerce/util/api_exception.dart';
 
 abstract class ICommentRepository {
   Future<Either<String, List<Comment>>> getComments(String productId);
+  Future<Either<String, String>> postComments(String productId, String comment);
 }
 
 class CommentRepository extends ICommentRepository {
@@ -16,6 +17,16 @@ class CommentRepository extends ICommentRepository {
     try {
       final response = await _datasource.getComments(productId);
       return right(response);
+    } on ApiException catch (ex) {
+      return left(ex.message ?? 'unknown error');
+    }
+  }
+  
+  @override
+  Future<Either<String, String>> postComments(String productId, String comment) async {
+    try {
+      final response = await _datasource.postComment(productId,comment);
+      return right('نظر شما ثبت شد');
     } on ApiException catch (ex) {
       return left(ex.message ?? 'unknown error');
     }
